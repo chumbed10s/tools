@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Densidad de Siembra | Conversor</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --field-900:#162922;
+    --field-800:#1F3D2E;
+    --field-700:#2C5240;
+    --soil-600:#8B5E34;
+    --soil-500:#A8723F;
+    --paper-100:#F3EFE4;
+    --paper-50:#FAF8F2;
+    --ink-900:#1A1A18;
+    --ink-500:#5C5F57;
+    --line-200:#D8D2BF;
+    --amber-500:#C97D2D;
+    --ok-600:#3D6B4C;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper-100);
+    color:var(--ink-900);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+    background-image:
+      linear-gradient(var(--line-200) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-200) 1px, transparent 1px);
+    background-size: 36px 36px;
+    background-position: -1px -1px;
+  }
+
+  .wrap{
+    max-width:980px;
+    margin:0 auto;
+    padding:40px 24px 80px;
+  }
+
+  /* Header */
+  header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    border-bottom:2px solid var(--field-800);
+    padding-bottom:18px;
+    margin-bottom:36px;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .brand-icon{
+    width:46px;
+    height:46px;
+    border-radius:4px;
+    background:var(--field-800);
+    color:var(--paper-50);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    flex-shrink:0;
+  }
+  h1{
+    font-size:22px;
+    margin:0;
+    letter-spacing:.2px;
+    font-weight:600;
+  }
+  .subtitle{
+    margin:2px 0 0;
+    font-size:13px;
+    color:var(--ink-500);
+  }
+  .badge{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--field-700);
+    border:1px solid var(--field-700);
+    padding:5px 10px;
+    border-radius:3px;
+    white-space:nowrap;
+  }
+
+  /* Layout */
+  .grid{
+    display:grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap:24px;
+  }
+  @media (max-width:760px){
+    .grid{grid-template-columns:1fr;}
+  }
+
+  .panel{
+    background:var(--paper-50);
+    border:1px solid var(--line-200);
+    border-radius:6px;
+    padding:26px;
+  }
+  .panel + .panel{margin-top:24px;}
+
+  .panel-title{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-size:13px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--field-800);
+    margin:0 0 18px;
+  }
+  .panel-title i{font-size:13px;color:var(--soil-600);}
+
+  /* Mode toggle */
+  .toggle{
+    display:flex;
+    background:var(--paper-100);
+    border:1px solid var(--line-200);
+    border-radius:5px;
+    padding:3px;
+    margin-bottom:22px;
+  }
+  .toggle button{
+    flex:1;
+    border:none;
+    background:transparent;
+    padding:10px 8px;
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--ink-500);
+    cursor:pointer;
+    border-radius:4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    transition:background .15s, color .15s;
+  }
+  .toggle button.active{
+    background:var(--field-800);
+    color:var(--paper-50);
+  }
+  .toggle button i{font-size:11px;}
+
+  /* Field */
+  .field{margin-bottom:18px;}
+  .field label{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink-500);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:7px;
+  }
+  .field label i{color:var(--soil-600);font-size:11px;}
+  .input-row{
+    display:flex;
+    align-items:stretch;
+    border:1px solid var(--line-200);
+    border-radius:5px;
+    overflow:hidden;
+    background:#fff;
+  }
+  .input-row:focus-within{
+    border-color:var(--field-700);
+  }
+  .input-row input{
+    flex:1;
+    border:none;
+    outline:none;
+    padding:13px 14px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:17px;
+    font-weight:500;
+    color:var(--ink-900);
+    background:transparent;
+    min-width:0;
+  }
+  .unit-tag{
+    display:flex;
+    align-items:center;
+    padding:0 14px;
+    background:var(--paper-100);
+    color:var(--ink-500);
+    font-size:12px;
+    font-weight:600;
+    border-left:1px solid var(--line-200);
+    white-space:nowrap;
+  }
+
+  .hint{
+    font-size:11.5px;
+    color:var(--ink-500);
+    margin-top:6px;
+  }
+
+  /* Result */
+  .result-card{
+    background:var(--field-800);
+    border-radius:6px;
+    padding:22px 24px;
+    margin-top:6px;
+    position:relative;
+    overflow:hidden;
+  }
+  .result-label{
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:#B9C9BD;
+    font-weight:600;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:7px;
+  }
+  .result-value{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:34px;
+    font-weight:700;
+    color:var(--paper-50);
+    letter-spacing:.2px;
+    line-height:1.1;
+    word-break:break-all;
+  }
+  .result-unit{
+    font-size:14px;
+    color:#B9C9BD;
+    font-weight:500;
+    margin-left:6px;
+  }
+
+  .save-btn{
+    margin-top:18px;
+    width:100%;
+    border:none;
+    background:var(--soil-600);
+    color:var(--paper-50);
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:13px;
+    font-weight:600;
+    padding:12px 14px;
+    border-radius:5px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:background .15s;
+  }
+  .save-btn:hover{background:var(--soil-500);}
+
+  /* Seed line visual */
+  .seedline-wrap{
+    margin-top:22px;
+    padding-top:18px;
+    border-top:1px dashed var(--line-200);
+  }
+  .seedline-caption{
+    font-size:11.5px;
+    color:var(--ink-500);
+    margin-top:8px;
+    display:flex;
+    justify-content:space-between;
+    font-family:'IBM Plex Mono', monospace;
+  }
+
+  /* History */
+  .history-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    max-height:420px;
+    overflow-y:auto;
+  }
+  .history-item{
+    border:1px solid var(--line-200);
+    border-radius:5px;
+    padding:12px 14px;
+    background:#fff;
+  }
+  .history-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:6px;
+  }
+  .history-dir{
+    font-size:11px;
+    font-weight:600;
+    color:var(--field-700);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .history-time{
+    font-size:10.5px;
+    color:var(--ink-500);
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .history-eq{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13.5px;
+    color:var(--ink-900);
+  }
+  .history-sep{
+    font-size:10.5px;
+    color:var(--ink-500);
+    margin-top:4px;
+  }
+  .history-empty{
+    text-align:center;
+    color:var(--ink-500);
+    font-size:13px;
+    padding:30px 10px;
+  }
+  .history-empty i{
+    display:block;
+    font-size:22px;
+    margin-bottom:8px;
+    color:var(--line-200);
+  }
+
+  .clear-btn{
+    width:100%;
+    margin-top:14px;
+    border:1px solid var(--line-200);
+    background:transparent;
+    color:var(--ink-500);
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:12px;
+    font-weight:600;
+    padding:9px;
+    border-radius:5px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    transition:border-color .15s, color .15s;
+  }
+  .clear-btn:hover{border-color:var(--soil-600);color:var(--soil-600);}
+
+  footer{
+    margin-top:32px;
+    text-align:center;
+    font-size:11.5px;
+    color:var(--ink-500);
+    font-family:'IBM Plex Mono', monospace;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="brand-icon"><i class="fa-solid fa-seedling"></i></div>
+      <div>
+        <h1>Conversor de Densidad de Siembra</h1>
+        <p class="subtitle">Semillas por metro lineal &harr; semillas por hectárea</p>
+      </div>
+    </div>
+    <span class="badge" id="modeBadge">SEP. 52,5 CM</span>
+  </header>
+
+  <div class="grid">
+
+    <!-- LEFT: Calculator -->
+    <div class="col-left">
+      <div class="panel">
+        <p class="panel-title"><i class="fa-solid fa-calculator"></i>Calculadora</p>
+
+        <div class="toggle">
+          <button class="active" id="btnMtoHa">
+            <i class="fa-solid fa-ruler-horizontal"></i> Semillas/m &rarr; Semillas/ha
+          </button>
+          <button id="btnHaToM">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i> Semillas/ha &rarr; Semillas/m
+          </button>
+        </div>
+
+        <div class="field">
+          <label id="inputLabel"><i class="fa-solid fa-seedling"></i> Semillas por metro lineal</label>
+          <div class="input-row">
+            <input type="number" id="inputValue" placeholder="0" inputmode="decimal" step="any">
+            <span class="unit-tag" id="inputUnit">sem/m</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label><i class="fa-solid fa-ruler"></i> Separación entre líneas</label>
+          <div class="input-row">
+            <input type="number" id="separation" value="52.5" inputmode="decimal" step="any">
+            <span class="unit-tag">cm</span>
+          </div>
+          <p class="hint">Valor por defecto: 52,5 cm. Editable según el cultivo o configuración del sembrador.</p>
+        </div>
+
+        <div class="result-card">
+          <div class="result-label"><i class="fa-solid fa-chart-line"></i> Resultado</div>
+          <div class="result-value" id="resultValue">0<span class="result-unit" id="resultUnit">sem/ha</span></div>
+        </div>
+
+        <button class="save-btn" id="saveBtn">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar en historial
+        </button>
+
+        <div class="seedline-wrap">
+          <svg id="seedlineSvg" viewBox="0 0 600 70" width="100%" height="70" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="seedline-caption">
+            <span id="seedlineLeft">0 sem/m</span>
+            <span id="seedlineRight">sep. 52,5 cm</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: History -->
+    <div class="col-right">
+      <div class="panel">
+        <p class="panel-title"><i class="fa-solid fa-clock-rotate-left"></i>Historial</p>
+        <div class="history-list" id="historyList">
+          <div class="history-empty">
+            <i class="fa-solid fa-inbox"></i>
+            Todavía no guardaste conversiones.
+          </div>
+        </div>
+        <button class="clear-btn" id="clearBtn">
+          <i class="fa-solid fa-trash"></i> Limpiar historial
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>SIEMBRA · DENSIDAD &middot; cálculo en base a separación entre líneas configurable</footer>
+</div>
+
+<script>
+let mode = 'mToHa'; // 'mToHa' | 'haToM'
+const STORAGE_KEY = 'densidad_siembra_historial';
+
+const inputValueEl = document.getElementById('inputValue');
+const separationEl = document.getElementById('separation');
+const resultValueEl = document.getElementById('resultValue');
+const resultUnitEl = document.getElementById('resultUnit');
+const inputLabelEl = document.getElementById('inputLabel');
+const inputUnitEl = document.getElementById('inputUnit');
+const modeBadge = document.getElementById('modeBadge');
+const btnMtoHa = document.getElementById('btnMtoHa');
+const btnHaToM = document.getElementById('btnHaToM');
+const seedlineLeft = document.getElementById('seedlineLeft');
+const seedlineRight = document.getElementById('seedlineRight');
+const seedlineSvg = document.getElementById('seedlineSvg');
+
+function fmt(n){
+  if (!isFinite(n)) return '0';
+  return n.toLocaleString('es-AR', {maximumFractionDigits: 2});
+}
+
+function calc(){
+  const val = parseFloat(inputValueEl.value) || 0;
+  const sep = parseFloat(separationEl.value) || 0;
+  modeBadge.textContent = 'SEP. ' + (sep ? fmt(sep) : '0') + ' CM';
+
+  let result = 0;
+  if (mode === 'mToHa'){
+    // sem/ha = sem/m * 1,000,000 / sep_cm
+    result = sep > 0 ? val * 1000000 / sep : 0;
+    resultUnitEl.textContent = 'sem/ha';
+  } else {
+    // sem/m = sem/ha * sep_cm / 1,000,000
+    result = val * sep / 1000000;
+    resultUnitEl.textContent = 'sem/m';
+  }
+  resultValueEl.innerHTML = fmt(result) + '<span class="result-unit" id="resultUnit">' + (mode==='mToHa' ? 'sem/ha' : 'sem/m') + '</span>';
+
+  drawSeedline(val, sep);
+  return {val, sep, result};
+}
+
+function drawSeedline(val, sep){
+  const seedsPerM = mode === 'mToHa' ? val : (sep > 0 ? (val * sep / 1000000) : 0);
+  seedlineLeft.textContent = fmt(seedsPerM) + ' sem/m';
+  seedlineRight.textContent = 'sep. ' + fmt(sep) + ' cm';
+
+  const w = 600, h = 70, lineY = 40, marginX = 12;
+  let svg = `<line x1="${marginX}" y1="${lineY}" x2="${w-marginX}" y2="${lineY}" stroke="#8B5E34" stroke-width="2"/>`;
+
+  // ticks every ~ representing separation visually (purely illustrative, fixed count)
+  const tickCount = 6;
+  for(let i=0;i<=tickCount;i++){
+    const x = marginX + (w-2*marginX) * (i/tickCount);
+    svg += `<line x1="${x}" y1="${lineY-6}" x2="${x}" y2="${lineY+6}" stroke="#D8D2BF" stroke-width="1.5"/>`;
+  }
+
+  // seeds: density of dots scaled to seedsPerM (clamped for visual sense)
+  const visualCount = Math.max(2, Math.min(40, Math.round((seedsPerM || 1) * 2)));
+  for(let i=0;i<visualCount;i++){
+    const x = marginX + (w-2*marginX) * ((i+0.5)/visualCount);
+    svg += `<circle cx="${x}" cy="${lineY}" r="4.5" fill="#1F3D2E"/>`;
+  }
+
+  seedlineSvg.innerHTML = svg;
+}
+
+function setMode(newMode){
+  mode = newMode;
+  if (mode === 'mToHa'){
+    btnMtoHa.classList.add('active');
+    btnHaToM.classList.remove('active');
+    inputLabelEl.innerHTML = '<i class="fa-solid fa-seedling"></i> Semillas por metro lineal';
+    inputUnitEl.textContent = 'sem/m';
+  } else {
+    btnHaToM.classList.add('active');
+    btnMtoHa.classList.remove('active');
+    inputLabelEl.innerHTML = '<i class="fa-solid fa-seedling"></i> Semillas por hectárea';
+    inputUnitEl.textContent = 'sem/ha';
+  }
+  calc();
+}
+
+btnMtoHa.addEventListener('click', () => setMode('mToHa'));
+btnHaToM.addEventListener('click', () => setMode('haToM'));
+inputValueEl.addEventListener('input', calc);
+separationEl.addEventListener('input', calc);
+
+// ---- History ----
+async function loadHistory(){
+  try {
+    const res = await window.storage.get(STORAGE_KEY);
+    return res && res.value ? JSON.parse(res.value) : [];
+  } catch(e){
+    return [];
+  }
+}
+
+async function saveHistory(list){
+  try {
+    await window.storage.set(STORAGE_KEY, JSON.stringify(list));
+  } catch(e){
+    console.error('Error al guardar historial', e);
+  }
+}
+
+function renderHistory(list){
+  const container = document.getElementById('historyList');
+  if (!list || list.length === 0){
+    container.innerHTML = `<div class="history-empty"><i class="fa-solid fa-inbox"></i>Todavía no guardaste conversiones.</div>`;
+    return;
+  }
+  container.innerHTML = list.slice().reverse().map(item => {
+    const dirLabel = item.mode === 'mToHa' ? 'Sem/m &rarr; Sem/ha' : 'Sem/ha &rarr; Sem/m';
+    const dirIcon = item.mode === 'mToHa' ? 'fa-arrow-up-right-dots' : 'fa-arrow-down-left-and-arrow-up-right-to-center';
+    const inUnit = item.mode === 'mToHa' ? 'sem/m' : 'sem/ha';
+    const outUnit = item.mode === 'mToHa' ? 'sem/ha' : 'sem/m';
+    return `
+      <div class="history-item">
+        <div class="history-top">
+          <span class="history-dir"><i class="fa-solid ${dirIcon}"></i> ${dirLabel}</span>
+          <span class="history-time">${item.time}</span>
+        </div>
+        <div class="history-eq">${fmt(item.val)} ${inUnit} &rarr; <strong>${fmt(item.result)} ${outUnit}</strong></div>
+        <div class="history-sep">Separación: ${fmt(item.sep)} cm</div>
+      </div>
+    `;
+  }).join('');
+}
+
+document.getElementById('saveBtn').addEventListener('click', async () => {
+  const {val, sep, result} = calc();
+  if (!val){ return; }
+  const list = await loadHistory();
+  const now = new Date();
+  const time = now.toLocaleDateString('es-AR') + ' ' + now.toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
+  list.push({mode, val, sep, result, time});
+  await saveHistory(list);
+  renderHistory(list);
+});
+
+document.getElementById('clearBtn').addEventListener('click', async () => {
+  await saveHistory([]);
+  renderHistory([]);
+});
+
+// ---- Init ----
+(async function init(){
+  const list = await loadHistory();
+  renderHistory(list);
+  calc();
+})();
+</script>
+</body>
+</html>
