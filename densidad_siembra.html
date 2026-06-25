@@ -333,7 +333,9 @@
     <div class="charts-grid">
       <div class="chart-box"><h4><i class="fa-solid fa-chart-simple"></i> Ha por lote</h4><canvas id="chartHa"></canvas></div>
       <div class="chart-box"><h4><i class="fa-solid fa-chart-simple"></i> Dosis promedio (kg/ha) por lote</h4><canvas id="chartDosis"></canvas></div>
-      <div class="chart-box"><h4><i class="fa-solid fa-chart-simple"></i> Totales por granja</h4><canvas id="chartGranja"></canvas></div>
+      <div class="chart-box"><h4><i class="fa-solid fa-warehouse"></i> Ha totales por granja</h4><canvas id="chartGranjaHa"></canvas></div>
+      <div class="chart-box"><h4><i class="fa-solid fa-warehouse"></i> Kg totales por granja</h4><canvas id="chartGranjaKg"></canvas></div>
+      <div class="chart-box"><h4><i class="fa-solid fa-layer-group"></i> Cantidad de lotes por granja</h4><canvas id="chartLotesGranja"></canvas></div>
       <div class="chart-box"><h4><i class="fa-solid fa-chart-line"></i> Evolución por campaña</h4><canvas id="chartCampana"></canvas></div>
       <div class="chart-box"><h4><i class="fa-solid fa-scale-balanced"></i> Siembra vs Fertilización (ha por lote)</h4><canvas id="chartHaCompare"></canvas></div>
       <div class="chart-box"><h4><i class="fa-solid fa-scale-balanced"></i> Densidad vs Dosis promedio por lote</h4><canvas id="chartDensDosis"></canvas></div>
@@ -363,7 +365,47 @@
     </div>
 
     <div class="panel">
-      <p class="panel-title"><i class="fa-solid fa-seedling"></i>Detalle de siembra por zona</p>
+      <p class="panel-title"><i class="fa-solid fa-map-location-dot"></i>Resumen por lote</p>
+      <div style="overflow-x:auto;">
+        <table class="summary-table" id="tableResumenLote">
+          <thead><tr><th>Cliente</th><th>Granja</th><th>Lote</th><th>Variedad</th><th>Campaña</th><th>Ha siembra</th><th>Semillas totales</th><th>Densidad prom.</th><th>Ha fert.</th><th>Kg totales</th><th>Dosis prom.</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="panel-title"><i class="fa-solid fa-warehouse"></i>Resumen por granja</p>
+      <div style="overflow-x:auto;">
+        <table class="summary-table" id="tableResumenGranja">
+          <thead><tr><th>Granja</th><th>Lotes</th><th>Ha siembra</th><th>Semillas totales</th><th>Densidad prom.</th><th>Ha fert.</th><th>Kg totales</th><th>Dosis prom.</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="panel-title"><i class="fa-solid fa-user"></i>Resumen por cliente</p>
+      <div style="overflow-x:auto;">
+        <table class="summary-table" id="tableResumenCliente">
+          <thead><tr><th>Cliente</th><th>Lotes</th><th>Ha siembra</th><th>Semillas totales</th><th>Densidad prom.</th><th>Ha fert.</th><th>Kg totales</th><th>Dosis prom.</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="panel-title"><i class="fa-solid fa-leaf"></i>Resumen por variedad</p>
+      <div style="overflow-x:auto;">
+        <table class="summary-table" id="tableResumenVariedad">
+          <thead><tr><th>Variedad</th><th>Lotes</th><th>Ha siembra</th><th>Semillas totales</th><th>Densidad prom.</th><th>Ha fert.</th><th>Kg totales</th><th>Dosis prom.</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="panel-title"><i class="fa-solid fa-seedling"></i>Detalle completo de siembra por zona</p>
       <div style="overflow-x:auto;">
         <table class="summary-table" id="tableSiembraDetalle">
           <thead><tr><th>Cliente</th><th>Granja</th><th>Lote</th><th>Variedad</th><th>Campaña</th><th>Zona</th><th>Sem/m</th><th>Sem/ha</th><th>Ha</th></tr></thead>
@@ -373,7 +415,7 @@
     </div>
 
     <div class="panel">
-      <p class="panel-title"><i class="fa-solid fa-flask"></i>Detalle de fertilización por zona</p>
+      <p class="panel-title"><i class="fa-solid fa-flask"></i>Detalle completo de fertilización por zona</p>
       <div style="overflow-x:auto;">
         <table class="summary-table" id="tableFertDetalle">
           <thead><tr><th>Cliente</th><th>Granja</th><th>Lote</th><th>Variedad</th><th>Campaña</th><th>Zona</th><th>Kg/ha</th><th>Ha</th></tr></thead>
@@ -811,7 +853,7 @@ const filterCliente = document.getElementById('filterCliente');
 const filterGranja = document.getElementById('filterGranja');
 const filterLote = document.getElementById('filterLote');
 const filterVariedad = document.getElementById('filterVariedad');
-let chartHa, chartDosis, chartGranja, chartCampana, chartHaCompare, chartDensDosis, chartZonaSiembra, chartZonaFert;
+let chartHa, chartDosis, chartGranjaHa, chartGranjaKg, chartLotesGranja, chartCampana, chartHaCompare, chartDensDosis, chartZonaSiembra, chartZonaFert;
 let chartClienteDonut, chartVariedadDonut;
 
 function uniqueVals(list, key){
@@ -844,16 +886,18 @@ function refreshFilterOptions(){
 }
 
 function aggregate(entries){
-  let totalHa = 0, totalSemillas = 0, totalHaFert = 0, totalKg = 0;
+  let totalHa = 0, totalSemillas = 0, totalHaFert = 0, totalKg = 0, weightedM = 0;
   entries.forEach(e => {
     totalHa += e.siembraTotals.totalHa;
     totalSemillas += e.siembraTotals.totalSemillas;
     totalHaFert += e.fertTotals.totalHa;
     totalKg += e.fertTotals.totalKg;
+    weightedM += e.siembraTotals.avgM * e.siembraTotals.totalHa;
   });
   return {
     totalHa, totalSemillas, totalHaFert, totalKg,
     avgSemHa: totalHa > 0 ? totalSemillas/totalHa : 0,
+    avgSemM: totalHa > 0 ? weightedM/totalHa : 0,
     avgKgHa: totalHaFert > 0 ? totalKg/totalHaFert : 0
   };
 }
@@ -888,17 +932,19 @@ function clearEmptyChart(canvas){
 function renderCharts(entries){
   const ctxHa = document.getElementById('chartHa');
   const ctxDosis = document.getElementById('chartDosis');
-  const ctxGranja = document.getElementById('chartGranja');
+  const ctxGranjaHa = document.getElementById('chartGranjaHa');
+  const ctxGranjaKg = document.getElementById('chartGranjaKg');
+  const ctxLotesGranja = document.getElementById('chartLotesGranja');
   const ctxCampana = document.getElementById('chartCampana');
   const ctxHaCompare = document.getElementById('chartHaCompare');
   const ctxDensDosis = document.getElementById('chartDensDosis');
   const ctxZonaSiembra = document.getElementById('chartZonaSiembra');
   const ctxZonaFert = document.getElementById('chartZonaFert');
 
-  destroyChart(chartHa); destroyChart(chartDosis); destroyChart(chartGranja); destroyChart(chartCampana);
+  destroyChart(chartHa); destroyChart(chartDosis); destroyChart(chartGranjaHa); destroyChart(chartGranjaKg); destroyChart(chartLotesGranja); destroyChart(chartCampana);
   destroyChart(chartHaCompare); destroyChart(chartDensDosis); destroyChart(chartZonaSiembra); destroyChart(chartZonaFert);
 
-  const allCanvases = [ctxHa, ctxDosis, ctxGranja, ctxCampana, ctxHaCompare, ctxDensDosis, ctxZonaSiembra, ctxZonaFert];
+  const allCanvases = [ctxHa, ctxDosis, ctxGranjaHa, ctxGranjaKg, ctxLotesGranja, ctxCampana, ctxHaCompare, ctxDensDosis, ctxZonaSiembra, ctxZonaFert];
   allCanvases.forEach(clearEmptyChart);
 
   if(entries.length === 0){
@@ -923,13 +969,22 @@ function renderCharts(entries){
   const granjas = uniqueVals(entries, 'granja');
   const haPorGranja = granjas.map(g => entries.filter(e => e.granja === g).reduce((s,e) => s + e.siembraTotals.totalHa, 0));
   const kgPorGranja = granjas.map(g => entries.filter(e => e.granja === g).reduce((s,e) => s + e.fertTotals.totalKg, 0));
-  chartGranja = new Chart(ctxGranja, {
+  const lotesPorGranja = granjas.map(g => new Set(entries.filter(e => e.granja === g).map(e => e.lote)).size);
+
+  chartGranjaHa = new Chart(ctxGranjaHa, {
     type: 'bar',
-    data: { labels: granjas, datasets: [
-      { label: 'Ha totales', data: haPorGranja, backgroundColor: '#1F3D2E', borderRadius: 4 },
-      { label: 'Kg totales', data: kgPorGranja, backgroundColor: '#C97D2D', borderRadius: 4 }
-    ]},
-    options: { scales:{ y:{ beginAtZero:true } } }
+    data: { labels: granjas, datasets: [{ label: 'Ha totales', data: haPorGranja, backgroundColor: '#2C5240', borderRadius: 4 }] },
+    options: { plugins:{legend:{display:false}}, scales:{ y:{ beginAtZero:true } } }
+  });
+  chartGranjaKg = new Chart(ctxGranjaKg, {
+    type: 'bar',
+    data: { labels: granjas, datasets: [{ label: 'Kg totales', data: kgPorGranja, backgroundColor: '#C97D2D', borderRadius: 4 }] },
+    options: { plugins:{legend:{display:false}}, scales:{ y:{ beginAtZero:true } } }
+  });
+  chartLotesGranja = new Chart(ctxLotesGranja, {
+    type: 'bar',
+    data: { labels: granjas, datasets: [{ label: 'Lotes', data: lotesPorGranja, backgroundColor: '#5C5F57', borderRadius: 4 }] },
+    options: { plugins:{legend:{display:false}}, scales:{ y:{ beginAtZero:true, ticks:{ precision:0 } } } }
   });
 
   const key = `${entries[0].cliente}|${entries[0].granja}|${entries[0].lote}`;
@@ -941,9 +996,15 @@ function renderCharts(entries){
     chartCampana = new Chart(ctxCampana, {
       type: 'line',
       data: { labels: sorted.map(e => e.campana), datasets: [
-        { label: 'Densidad prom. (sem/ha)', data: sorted.map(e => e.siembraTotals.avgHa), borderColor:'#1F3D2E', backgroundColor:'#1F3D2E', tension:.3 },
+        { label: 'Densidad (sem/ha)', data: sorted.map(e => e.siembraTotals.avgHa), borderColor:'#1F3D2E', backgroundColor:'#1F3D2E', tension:.3, yAxisID:'y' },
+        { label: 'Dosis (kg/ha)', data: sorted.map(e => e.fertTotals.avgHa), borderColor:'#8B5E34', backgroundColor:'#8B5E34', tension:.3, yAxisID:'y1' }
       ]},
-      options: { scales:{ y:{ beginAtZero:true } } }
+      options: {
+        scales: {
+          y: { type:'linear', position:'left', beginAtZero:true, title:{display:true, text:'sem/ha'} },
+          y1: { type:'linear', position:'right', beginAtZero:true, title:{display:true, text:'kg/ha'}, grid:{drawOnChartArea:false} }
+        }
+      }
     });
   } else {
     showEmptyChart(ctxCampana, 'Elegí un lote específico con más de una campaña guardada para ver su evolución.');
@@ -1020,16 +1081,21 @@ function renderResumenCards(entries){
   let variedadTop = '-';
   let maxCount = 0;
   Object.keys(variedadCounts).forEach(v => { if(variedadCounts[v] > maxCount){ maxCount = variedadCounts[v]; variedadTop = v; } });
+  const haPromedioPorLote = lotesUnicos > 0 ? a.totalHa / lotesUnicos : 0;
 
   document.getElementById('resumenCards').innerHTML = `
     <div class="stat-card">${totalItemHTML('Ha de siembra', 'fa-vector-square', a.totalHa, 'ha', 0, 'hectáreas')}</div>
-    <div class="stat-card">${totalItemHTML('Densidad promedio', 'fa-seedling', a.avgSemHa, 'fixed', 1, 'sem/ha')}</div>
-    <div class="stat-card">${totalItemHTML('Dosis promedio', 'fa-flask', a.avgKgHa, 'fixed', 1, 'kg/ha')}</div>
+    <div class="stat-card">${totalItemHTML('Total de semillas', 'fa-seedling', a.totalSemillas, 'fixed', 1, 'semillas')}</div>
+    <div class="stat-card">${totalItemHTML('Densidad promedio', 'fa-chart-line', a.avgSemHa, 'fixed', 1, `sem/ha &middot; equiv. ${fmtFixed(a.avgSemM,1)} sem/m`)}</div>
+    <div class="stat-card">${totalItemHTML('Ha fertilizada', 'fa-vector-square', a.totalHaFert, 'ha', 0, 'hectáreas')}</div>
+    <div class="stat-card">${totalItemHTML('Total de fertilizante', 'fa-flask', a.totalKg, 'fixed', 1, 'kilogramos')}</div>
+    <div class="stat-card">${totalItemHTML('Dosis promedio', 'fa-chart-line', a.avgKgHa, 'fixed', 1, 'kg/ha')}</div>
     <div class="stat-card">
       <div class="total-item-label"><i class="fa-solid fa-layer-group"></i> Lotes / variedad principal</div>
       <div class="total-item-value"><span class="num">${lotesUnicos}</span><span class="unit">lotes</span></div>
       <div class="total-item-value"><span class="unit">${variedadTop}</span><span></span></div>
     </div>
+    <div class="stat-card">${totalItemHTML('Ha promedio por lote', 'fa-ruler-combined', haPromedioPorLote, 'ha', 0, 'hectáreas / lote')}</div>
   `;
   attachMiniCopyHandlers(document.getElementById('resumenCards'));
 }
@@ -1070,6 +1136,79 @@ function renderResumenCharts(entries){
   }
 }
 
+function aggregateBy(entries, keyFn){
+  const map = {};
+  entries.forEach(e => {
+    const k = keyFn(e) || '(sin dato)';
+    if(!map[k]) map[k] = { key: k, lotes: new Set(), totalHa: 0, totalSemillas: 0, totalHaFert: 0, totalKg: 0, weightedM: 0 };
+    const g = map[k];
+    g.lotes.add(`${e.cliente}|${e.granja}|${e.lote}`);
+    g.totalHa += e.siembraTotals.totalHa;
+    g.totalSemillas += e.siembraTotals.totalSemillas;
+    g.totalHaFert += e.fertTotals.totalHa;
+    g.totalKg += e.fertTotals.totalKg;
+    g.weightedM += e.siembraTotals.avgM * e.siembraTotals.totalHa;
+  });
+  return Object.values(map).map(g => ({
+    key: g.key,
+    lotesCount: g.lotes.size,
+    totalHa: g.totalHa,
+    totalSemillas: g.totalSemillas,
+    avgSemHa: g.totalHa > 0 ? g.totalSemillas/g.totalHa : 0,
+    totalHaFert: g.totalHaFert,
+    totalKg: g.totalKg,
+    avgKgHa: g.totalHaFert > 0 ? g.totalKg/g.totalHaFert : 0
+  })).sort((a,b) => a.key.localeCompare(b.key));
+}
+
+function renderRollupTable(tbodyId, rows, colCount){
+  const tbody = document.querySelector('#' + tbodyId + ' tbody');
+  if(rows.length === 0){
+    tbody.innerHTML = `<tr><td colspan="${colCount}" style="text-align:center;color:var(--ink-500);font-family:'IBM Plex Sans',sans-serif;">Sin datos para los filtros seleccionados.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td style="text-align:left;">${r.key}</td>
+      <td>${r.lotesCount}</td>
+      <td>${fmtHa(r.totalHa)}</td>
+      <td>${fmtFixed(r.totalSemillas,1)}</td>
+      <td>${fmtFixed(r.avgSemHa,1)}</td>
+      <td>${fmtHa(r.totalHaFert)}</td>
+      <td>${fmtFixed(r.totalKg,1)}</td>
+      <td>${fmtFixed(r.avgKgHa,1)}</td>
+    </tr>`).join('');
+}
+
+function renderResumenPorLote(entries){
+  const tbody = document.querySelector('#tableResumenLote tbody');
+  if(entries.length === 0){
+    tbody.innerHTML = `<tr><td colspan="11" style="text-align:center;color:var(--ink-500);font-family:'IBM Plex Sans',sans-serif;">Sin datos para los filtros seleccionados.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = entries.map(e => `
+    <tr>
+      <td style="text-align:left;">${e.cliente}</td>
+      <td style="text-align:left;">${e.granja}</td>
+      <td style="text-align:left;">${e.lote}</td>
+      <td style="text-align:left;">${e.variedad || '-'}</td>
+      <td style="text-align:left;">${e.campana || '-'}</td>
+      <td>${fmtHa(e.siembraTotals.totalHa)}</td>
+      <td>${fmtFixed(e.siembraTotals.totalSemillas,1)}</td>
+      <td>${fmtFixed(e.siembraTotals.avgHa,1)}</td>
+      <td>${fmtHa(e.fertTotals.totalHa)}</td>
+      <td>${fmtFixed(e.fertTotals.totalKg,1)}</td>
+      <td>${fmtFixed(e.fertTotals.avgHa,1)}</td>
+    </tr>`).join('');
+}
+
+function renderRollupTables(entries){
+  renderResumenPorLote(entries);
+  renderRollupTable('tableResumenGranja', aggregateBy(entries, e => e.granja), 8);
+  renderRollupTable('tableResumenCliente', aggregateBy(entries, e => e.cliente), 8);
+  renderRollupTable('tableResumenVariedad', aggregateBy(entries, e => e.variedad), 8);
+}
+
 function renderDetailTables(entries){
   const siembraBody = document.querySelector('#tableSiembraDetalle tbody');
   const fertBody = document.querySelector('#tableFertDetalle tbody');
@@ -1104,6 +1243,7 @@ function refreshAnalytics(){
   renderCharts(entries);
   renderResumenCards(entries);
   renderResumenCharts(entries);
+  renderRollupTables(entries);
   renderDetailTables(entries);
 }
 function refreshPanel(){ refreshAnalytics(); }
