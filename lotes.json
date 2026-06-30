@@ -1,0 +1,1272 @@
+[
+  {
+    "id": "l1782363792646246",
+    "cliente": "Savino Bello",
+    "granja": "Yrigoyen",
+    "lote": "1. Yrigoyen Fondo",
+    "variedad": "LG 30849 VIP3",
+    "campana": "2026",
+    "date": "25/6/2026 02:03 a. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.7,
+        "ha2": 51428.57142857143,
+        "haZona": 27.916
+      },
+      {
+        "m": 3.1,
+        "ha2": 59047.619047619046,
+        "haZona": 39.858
+      },
+      {
+        "m": 3.3,
+        "ha2": 62857.142857142855,
+        "haZona": 40.999
+      },
+      {
+        "m": 3.6,
+        "ha2": 68571.42857142857,
+        "haZona": 38.278
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 85,
+        "haZona": 27.916
+      },
+      {
+        "kgha": 95,
+        "haZona": 39.858
+      },
+      {
+        "kgha": 105,
+        "haZona": 40.999
+      },
+      {
+        "kgha": 115,
+        "haZona": 38.278
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 147.051,
+      "totalSemillas": 8991057.142857142,
+      "avgHa": 61142.441349308356,
+      "avgM": 3.2099781708386885
+    },
+    "fertTotals": {
+      "totalHa": 147.051,
+      "totalKg": 14866.235,
+      "avgHa": 101.09577629529892
+    }
+  },
+  {
+    "id": "l1782365169802768",
+    "cliente": "Savino Marsicano",
+    "granja": "Marsicano",
+    "lote": "5 - 120ha",
+    "variedad": "LG 30849 VIP3",
+    "campana": "2026",
+    "date": "25/6/2026 02:26 a. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.4474975,
+        "ha2": 46619,
+        "haZona": 27.83
+      },
+      {
+        "m": 3.19998,
+        "ha2": 60952,
+        "haZona": 44.916
+      },
+      {
+        "m": 3.5999775,
+        "ha2": 68571,
+        "haZona": 45.03
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 65,
+        "haZona": 13.103
+      },
+      {
+        "kgha": 85,
+        "haZona": 23.535
+      },
+      {
+        "kgha": 94,
+        "haZona": 27.061
+      },
+      {
+        "kgha": 110,
+        "haZona": 27.041
+      },
+      {
+        "kgha": 120,
+        "haZona": 27.037
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 117.776,
+      "totalSemillas": 7122878.932,
+      "avgHa": 60478.18682923516,
+      "avgM": 3.175104808534846
+    },
+    "fertTotals": {
+      "totalHa": 117.77699999999999,
+      "totalKg": 11614.854000000001,
+      "avgHa": 98.61733615221989
+    }
+  },
+  {
+    "id": "l1782418338041691",
+    "cliente": "Savino Fidel",
+    "granja": "Las Acacias",
+    "lote": "Lote 1",
+    "variedad": "BRV 8472 PWU",
+    "campana": "2026",
+    "date": "25/6/2026 05:12 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.7999825,
+        "ha2": 53333,
+        "haZona": 37.405
+      },
+      {
+        "m": 3.19998,
+        "ha2": 60952,
+        "haZona": 45.848
+      },
+      {
+        "m": 3.5999775,
+        "ha2": 68571,
+        "haZona": 47.342
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 75,
+        "haZona": 21.753
+      },
+      {
+        "kgha": 85,
+        "haZona": 24.227
+      },
+      {
+        "kgha": 95,
+        "haZona": 27.6
+      },
+      {
+        "kgha": 115,
+        "haZona": 28.98
+      },
+      {
+        "kgha": 130,
+        "haZona": 28.036
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 130.595,
+      "totalSemillas": 8035736.443,
+      "avgHa": 61531.73125311076,
+      "avgM": 3.230415890788315
+    },
+    "fertTotals": {
+      "totalHa": 130.596,
+      "totalKg": 13290.150000000001,
+      "avgHa": 101.76536800514565
+    }
+  },
+  {
+    "id": "l1782418957340573",
+    "cliente": "Savino Marsicano",
+    "granja": "Marsicano",
+    "lote": "4-Ombu",
+    "variedad": "BRV 8472 PWU",
+    "campana": "2026",
+    "date": "25/6/2026 05:22 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.399985,
+        "ha2": 45714,
+        "haZona": 10.166
+      },
+      {
+        "m": 2.69997,
+        "ha2": 51428,
+        "haZona": 11.104
+      },
+      {
+        "m": 2.999955,
+        "ha2": 57142,
+        "haZona": 11.579
+      },
+      {
+        "m": 3.2999925,
+        "ha2": 62857,
+        "haZona": 9.811
+      },
+      {
+        "m": 3.5999775,
+        "ha2": 68571,
+        "haZona": 12.948
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 65,
+        "haZona": 10.166
+      },
+      {
+        "kgha": 80,
+        "haZona": 11.104
+      },
+      {
+        "kgha": 90,
+        "haZona": 11.576
+      },
+      {
+        "kgha": 110,
+        "haZona": 9.811
+      },
+      {
+        "kgha": 125,
+        "haZona": 12.948
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 55.608000000000004,
+      "totalSemillas": 3201979.5890000006,
+      "avgHa": 57581.27587757158,
+      "avgM": 3.0230169835725076
+    },
+    "fertTotals": {
+      "totalHa": 55.605000000000004,
+      "totalKg": 5288.66,
+      "avgHa": 95.11123100440606
+    }
+  },
+  {
+    "id": "l1782419235717588",
+    "cliente": "Alexis - Leandro",
+    "granja": "Garza",
+    "lote": "Lote 1 - 45ha",
+    "variedad": "BRV 8472 PWU",
+    "campana": "2026",
+    "date": "25/6/2026 05:27 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.4999975,
+        "ha2": 47619,
+        "haZona": 7.302
+      },
+      {
+        "m": 2.7999825,
+        "ha2": 53333,
+        "haZona": 9.443
+      },
+      {
+        "m": 3.0999675,
+        "ha2": 59047,
+        "haZona": 9.797
+      },
+      {
+        "m": 3.2999925,
+        "ha2": 62857,
+        "haZona": 10.902
+      },
+      {
+        "m": 3.5999775,
+        "ha2": 68571,
+        "haZona": 11.147
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 65,
+        "haZona": 7.302
+      },
+      {
+        "kgha": 85,
+        "haZona": 9.443
+      },
+      {
+        "kgha": 95,
+        "haZona": 9.797
+      },
+      {
+        "kgha": 110,
+        "haZona": 10.902
+      },
+      {
+        "kgha": 122,
+        "haZona": 11.147
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 48.590999999999994,
+      "totalSemillas": 2879448.8669999996,
+      "avgHa": 59258.89294313762,
+      "avgM": 3.111091879514725
+    },
+    "fertTotals": {
+      "totalHa": 48.590999999999994,
+      "totalKg": 4767.154,
+      "avgHa": 98.10775658043673
+    }
+  },
+  {
+    "id": "l1782419534965454",
+    "cliente": "Savino Marsicano",
+    "granja": "Marsicano",
+    "lote": "3 - Aguerre",
+    "variedad": "SRM 566 VTPRO",
+    "campana": "2026",
+    "date": "25/6/2026 05:32 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.4999975,
+        "ha2": 47619,
+        "haZona": 19.412
+      },
+      {
+        "m": 2.7999825,
+        "ha2": 53333,
+        "haZona": 22.136
+      },
+      {
+        "m": 3.0999675,
+        "ha2": 59047,
+        "haZona": 23.032
+      },
+      {
+        "m": 3.2999925,
+        "ha2": 62857,
+        "haZona": 23.36
+      },
+      {
+        "m": 3.5999775,
+        "ha2": 68571,
+        "haZona": 23.36
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 70,
+        "haZona": 19.412
+      },
+      {
+        "kgha": 85,
+        "haZona": 22.136
+      },
+      {
+        "kgha": 95,
+        "haZona": 23.032
+      },
+      {
+        "kgha": 110,
+        "haZona": 23.36
+      },
+      {
+        "kgha": 124,
+        "haZona": 24.204
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 111.3,
+      "totalSemillas": 6535087.9,
+      "avgHa": 58715.9739442947,
+      "avgM": 3.082588632075472
+    },
+    "fertTotals": {
+      "totalHa": 112.144,
+      "totalKg": 10999.336,
+      "avgHa": 98.08225139106861
+    }
+  },
+  {
+    "id": "l1782419785173513",
+    "cliente": "Savino Fidel",
+    "granja": "Lo Jose",
+    "lote": "Lote 1",
+    "variedad": "LG 30849 VIP3",
+    "campana": "2026",
+    "date": "25/6/2026 05:36 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.899995,
+        "ha2": 55238,
+        "haZona": 36.276
+      },
+      {
+        "m": 3.2999925,
+        "ha2": 62857,
+        "haZona": 42.124
+      },
+      {
+        "m": 3.5999775,
+        "ha2": 68571,
+        "haZona": 43.587
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 75,
+        "haZona": 18.825
+      },
+      {
+        "kgha": 90,
+        "haZona": 25.826
+      },
+      {
+        "kgha": 100,
+        "haZona": 25.018
+      },
+      {
+        "kgha": 112,
+        "haZona": 25.311
+      },
+      {
+        "kgha": 125,
+        "haZona": 27.007
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 121.98700000000001,
+      "totalSemillas": 7640406.133,
+      "avgHa": 62632.95378196037,
+      "avgM": 3.2882300735529197
+    },
+    "fertTotals": {
+      "totalHa": 121.987,
+      "totalKg": 12448.722,
+      "avgHa": 102.04957905350571
+    }
+  },
+  {
+    "id": "l1782420139680683",
+    "cliente": "Savino Fidel",
+    "granja": "Kroger - Marisardi",
+    "lote": "Lote 1",
+    "variedad": "LG 30849 VIP3",
+    "campana": "2026",
+    "date": "25/6/2026 05:42 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.7999825,
+        "ha2": 53333,
+        "haZona": 77.98
+      },
+      {
+        "m": 3.2999925,
+        "ha2": 62857,
+        "haZona": 90.621
+      },
+      {
+        "m": 3.5999775,
+        "ha2": 68571,
+        "haZona": 98.142
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 85,
+        "haZona": 56.033
+      },
+      {
+        "kgha": 95,
+        "haZona": 65.599
+      },
+      {
+        "kgha": 105,
+        "haZona": 70.293
+      },
+      {
+        "kgha": 115,
+        "haZona": 74.819
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 266.743,
+      "totalSemillas": 16584766.618999999,
+      "avgHa": 62175.07720539995,
+      "avgM": 3.2641915532834975
+    },
+    "fertTotals": {
+      "totalHa": 266.744,
+      "totalKg": 26979.660000000003,
+      "avgHa": 101.14439312599346
+    }
+  },
+  {
+    "id": "l1782420353307256",
+    "cliente": "Savino Fidel",
+    "granja": "Lo Kroger",
+    "lote": "Lote Marozzini",
+    "variedad": "LG 30646 VIP3",
+    "campana": "2026",
+    "date": "25/6/2026 05:45 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.7999825,
+        "ha2": 53333,
+        "haZona": 20.003
+      },
+      {
+        "m": 3.2999925,
+        "ha2": 62857,
+        "haZona": 25.086
+      },
+      {
+        "m": 3.5999775,
+        "ha2": 68571,
+        "haZona": 23.204
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 85,
+        "haZona": 13.869
+      },
+      {
+        "kgha": 100,
+        "haZona": 18.674
+      },
+      {
+        "kgha": 105,
+        "haZona": 18.438
+      },
+      {
+        "kgha": 115,
+        "haZona": 17.312
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 68.293,
+      "totalSemillas": 4234772.185,
+      "avgHa": 62008.87623914602,
+      "avgM": 3.255466002555166
+    },
+    "fertTotals": {
+      "totalHa": 68.29299999999999,
+      "totalKg": 6973.134999999999,
+      "avgHa": 102.10614557860981
+    }
+  },
+  {
+    "id": "l1782420594494422",
+    "cliente": "Savino Fidel",
+    "granja": "Fuca",
+    "lote": "Lote 2. 14ha",
+    "variedad": "LG 30849 VIP3",
+    "campana": "2026",
+    "date": "25/6/2026 05:49 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.5999995,
+        "ha2": 49523.8,
+        "haZona": 4.639
+      },
+      {
+        "m": 3.00000225,
+        "ha2": 57142.9,
+        "haZona": 4.559
+      },
+      {
+        "m": 3.29999775,
+        "ha2": 62857.1,
+        "haZona": 5.28
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 75,
+        "haZona": 4.639
+      },
+      {
+        "kgha": 85,
+        "haZona": 4.559
+      },
+      {
+        "kgha": 95,
+        "haZona": 5.28
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 14.478000000000002,
+      "totalSemillas": 822140.8773,
+      "avgHa": 56785.52820140903,
+      "avgM": 2.9812402305739742
+    },
+    "fertTotals": {
+      "totalHa": 14.478000000000002,
+      "totalKg": 1237.04,
+      "avgHa": 85.44274071004281
+    }
+  },
+  {
+    "id": "l1782421268292349",
+    "cliente": "Savino Fidel",
+    "granja": "Silvia",
+    "lote": "Lote Silvia",
+    "variedad": "BRV 8372",
+    "campana": "2026",
+    "date": "25/6/2026 06:01 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.9,
+        "ha2": 55238.09523809524,
+        "haZona": 23.23
+      },
+      {
+        "m": 3.3,
+        "ha2": 62857.142857142855,
+        "haZona": 32.22
+      },
+      {
+        "m": 3.6,
+        "ha2": 68571.42857142857,
+        "haZona": 21.45
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 75,
+        "haZona": 10.01
+      },
+      {
+        "kgha": 87,
+        "haZona": 30.47
+      },
+      {
+        "kgha": 100,
+        "haZona": 24.86
+      },
+      {
+        "kgha": 115,
+        "haZona": 11.56
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 76.9,
+      "totalSemillas": 4779295.238095238,
+      "avgHa": 62149.48294012012,
+      "avgM": 3.262847854356306
+    },
+    "fertTotals": {
+      "totalHa": 76.9,
+      "totalKg": 7217.039999999999,
+      "avgHa": 93.84967490247072
+    }
+  },
+  {
+    "id": "l1782423932094534",
+    "cliente": "Savino Fidel",
+    "granja": "Lo Luisa",
+    "lote": "Lote 1",
+    "variedad": "LG 30849 VIP3",
+    "campana": "2026",
+    "date": "25/6/2026 06:45 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.90000025,
+        "ha2": 55238.1,
+        "haZona": 50.114
+      },
+      {
+        "m": 3.099999,
+        "ha2": 59047.6,
+        "haZona": 55.776
+      },
+      {
+        "m": 3.39999975,
+        "ha2": 64761.9,
+        "haZona": 55.599
+      },
+      {
+        "m": 3.5999984999999994,
+        "ha2": 68571.4,
+        "haZona": 50.882
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 85,
+        "haZona": 50.114
+      },
+      {
+        "kgha": 95,
+        "haZona": 55.776
+      },
+      {
+        "kgha": 105,
+        "haZona": 55.776
+      },
+      {
+        "kgha": 115,
+        "haZona": 55.776
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 212.371,
+      "totalSemillas": 13151387.9339,
+      "avgHa": 61926.47740934497,
+      "avgM": 3.2511400639906105
+    },
+    "fertTotals": {
+      "totalHa": 217.442,
+      "totalKg": 21829.13,
+      "avgHa": 100.3905869151314
+    }
+  },
+  {
+    "id": "l1782427286652504",
+    "cliente": "Savino Bello",
+    "granja": "Lo Marco",
+    "lote": "Las 100",
+    "variedad": "SRM 566 VTPRO",
+    "campana": "2026",
+    "date": "25/6/2026 07:41 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.6,
+        "ha2": 49523.80952380953,
+        "haZona": 27.76
+      },
+      {
+        "m": 3.1,
+        "ha2": 59047.619047619046,
+        "haZona": 29.405
+      },
+      {
+        "m": 3.3,
+        "ha2": 62857.142857142855,
+        "haZona": 30.148
+      },
+      {
+        "m": 3.6,
+        "ha2": 68571.42857142857,
+        "haZona": 26.525
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 88,
+        "haZona": 27.76
+      },
+      {
+        "kgha": 95,
+        "haZona": 29.405
+      },
+      {
+        "kgha": 105,
+        "haZona": 30.148
+      },
+      {
+        "kgha": 115,
+        "haZona": 26.525
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 113.838,
+      "totalSemillas": 6824950.476190476,
+      "avgHa": 59953.183262095925,
+      "avgM": 3.1475421212600363
+    },
+    "fertTotals": {
+      "totalHa": 113.838,
+      "totalKg": 11452.27,
+      "avgHa": 100.60146875384319
+    }
+  },
+  {
+    "id": "l17824319149934",
+    "cliente": "Savino Luna",
+    "granja": "Santa Monica",
+    "lote": "Lote 3",
+    "variedad": "SRM 566 VTPRO",
+    "campana": "2026",
+    "date": "25/6/2026 08:58 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.6,
+        "ha2": 49523.80952380953,
+        "haZona": 5.639
+      },
+      {
+        "m": 3.1,
+        "ha2": 59047.619047619046,
+        "haZona": 7.567
+      },
+      {
+        "m": 3.3,
+        "ha2": 62857.142857142855,
+        "haZona": 8.172
+      },
+      {
+        "m": 3.6,
+        "ha2": 68571.42857142857,
+        "haZona": 7.839
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 85,
+        "haZona": 5.639
+      },
+      {
+        "kgha": 95,
+        "haZona": 7.567
+      },
+      {
+        "kgha": 105,
+        "haZona": 8.172
+      },
+      {
+        "kgha": 110,
+        "haZona": 7.839
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 29.217,
+      "totalSemillas": 1777278.0952380951,
+      "avgHa": 60830.27330794042,
+      "avgM": 3.193589348666872
+    },
+    "fertTotals": {
+      "totalHa": 29.217,
+      "totalKg": 2918.53,
+      "avgHa": 99.89150152308589
+    }
+  },
+  {
+    "id": "l1782762240711316",
+    "cliente": "Savino Luna",
+    "granja": "Santa Monica",
+    "lote": "Lote 4",
+    "variedad": "SRM 566 VTPRO",
+    "campana": "2026",
+    "date": "29/6/2026 04:44 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.7,
+        "ha2": 51428.57142857143,
+        "haZona": 6.552
+      },
+      {
+        "m": 3.2,
+        "ha2": 60952.380952380954,
+        "haZona": 9.76
+      },
+      {
+        "m": 3.50000175,
+        "ha2": 66666.7,
+        "haZona": 11.062
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 85,
+        "haZona": 6.552
+      },
+      {
+        "kgha": 97,
+        "haZona": 9.76
+      },
+      {
+        "kgha": 107,
+        "haZona": 11.062
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 27.373999999999995,
+      "totalSemillas": 1669322.273495238,
+      "avgHa": 60982.036731761465,
+      "avgM": 3.2015569284174767
+    },
+    "fertTotals": {
+      "totalHa": 27.373999999999995,
+      "totalKg": 2687.274,
+      "avgHa": 98.16884635055163
+    }
+  },
+  {
+    "id": "l1782762330738427",
+    "cliente": "Savino Luna",
+    "granja": "Santa Monica",
+    "lote": "Lote 5",
+    "variedad": "SRM 566 VTPRO",
+    "campana": "2026",
+    "date": "29/6/2026 04:45 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.5999995,
+        "ha2": 49523.8,
+        "haZona": 10.55
+      },
+      {
+        "m": 3.29999775,
+        "ha2": 62857.1,
+        "haZona": 14.842
+      },
+      {
+        "m": 3.5999984999999994,
+        "ha2": 68571.4,
+        "haZona": 15.532
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 85,
+        "haZona": 10.55
+      },
+      {
+        "kgha": 95,
+        "haZona": 14.842
+      },
+      {
+        "kgha": 107,
+        "haZona": 15.532
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 40.92400000000001,
+      "totalSemillas": 2520452.153,
+      "avgHa": 61588.60700322548,
+      "avgM": 3.2334018676693375
+    },
+    "fertTotals": {
+      "totalHa": 40.92400000000001,
+      "totalKg": 3968.664,
+      "avgHa": 96.97644414035773
+    }
+  },
+  {
+    "id": "l1782762474994172",
+    "cliente": "Savino Luna",
+    "granja": "Santa Monica",
+    "lote": "Lote 6",
+    "variedad": "SRM 566 VTPRO",
+    "campana": "2026",
+    "date": "29/6/2026 04:47 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.79999825,
+        "ha2": 53333.3,
+        "haZona": 6.632
+      },
+      {
+        "m": 3.29999775,
+        "ha2": 62857.1,
+        "haZona": 7.458
+      },
+      {
+        "m": 3.50000175,
+        "ha2": 66666.7,
+        "haZona": 7.658
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 85,
+        "haZona": 6.632
+      },
+      {
+        "kgha": 95,
+        "haZona": 7.458
+      },
+      {
+        "kgha": 108,
+        "haZona": 7.658
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 21.748,
+      "totalSemillas": 1333028.2859999998,
+      "avgHa": 61294.293084421544,
+      "avgM": 3.217950386932131
+    },
+    "fertTotals": {
+      "totalHa": 21.748,
+      "totalKg": 2099.294,
+      "avgHa": 96.52814051866837
+    }
+  },
+  {
+    "id": "l1782762859560762",
+    "cliente": "Savino Luna",
+    "granja": "Santa Monica",
+    "lote": "Lote 8",
+    "variedad": "SRM 566 VTPRO",
+    "campana": "2026",
+    "date": "29/6/2026 04:54 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.8,
+        "ha2": 53333.333333333336,
+        "haZona": 9.635
+      },
+      {
+        "m": 3.29999775,
+        "ha2": 62857.1,
+        "haZona": 10.633
+      },
+      {
+        "m": 3.6,
+        "ha2": 68571.42857142857,
+        "haZona": 9.893
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 85,
+        "haZona": 9.635
+      },
+      {
+        "kgha": 95,
+        "haZona": 10.633
+      },
+      {
+        "kgha": 110,
+        "haZona": 9.893
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 30.161,
+      "totalSemillas": 1860603.3538238094,
+      "avgHa": 61689.04724060241,
+      "avgM": 3.2386749801316266
+    },
+    "fertTotals": {
+      "totalHa": 30.161,
+      "totalKg": 2917.34,
+      "avgHa": 96.72557275952389
+    }
+  },
+  {
+    "id": "l1782773393200201",
+    "cliente": "Savino Luna",
+    "granja": "Santa Monica",
+    "lote": "Lote 9",
+    "variedad": "SRM 566 VTPRO",
+    "campana": "2026",
+    "date": "29/6/2026 07:49 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.8,
+        "ha2": 53333.333333333336,
+        "haZona": 7.11
+      },
+      {
+        "m": 3.29999775,
+        "ha2": 62857.1,
+        "haZona": 9.769
+      },
+      {
+        "m": 3.5,
+        "ha2": 66666.66666666667,
+        "haZona": 10.104
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 85,
+        "haZona": 7.11
+      },
+      {
+        "kgha": 98,
+        "haZona": 9.769
+      },
+      {
+        "kgha": 110,
+        "haZona": 10.104
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 26.983,
+      "totalSemillas": 1666851.0099,
+      "avgHa": 61774.11740355038,
+      "avgM": 3.2431411636863947
+    },
+    "fertTotals": {
+      "totalHa": 26.983,
+      "totalKg": 2673.152,
+      "avgHa": 99.06800578141792
+    }
+  },
+  {
+    "id": "l1782775544067675",
+    "cliente": "Savino Luna",
+    "granja": "Santa Monica",
+    "lote": "Lote 10",
+    "variedad": "SRM 566 VTPRO",
+    "campana": "2026",
+    "date": "29/6/2026 08:25 p. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.8,
+        "ha2": 53333.333333333336,
+        "haZona": 13.069
+      },
+      {
+        "m": 3.29999775,
+        "ha2": 62857.1,
+        "haZona": 13.405
+      },
+      {
+        "m": 3.6,
+        "ha2": 68571.42857142857,
+        "haZona": 11.992
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 85,
+        "haZona": 13.069
+      },
+      {
+        "kgha": 98,
+        "haZona": 13.405
+      },
+      {
+        "kgha": 110,
+        "haZona": 11.992
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 38.466,
+      "totalSemillas": 2361921.3302619047,
+      "avgHa": 61402.831858313955,
+      "avgM": 3.2236486725614824
+    },
+    "fertTotals": {
+      "totalHa": 38.466,
+      "totalKg": 3743.675,
+      "avgHa": 97.32426038579526
+    }
+  },
+  {
+    "id": "l1782790971048306",
+    "cliente": "Savino Luna",
+    "granja": "Santa Monica",
+    "lote": "Lote 11",
+    "variedad": "SRM 566 VTPRO",
+    "campana": "2026",
+    "date": "30/6/2026 12:42 a. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.8,
+        "ha2": 53333.333333333336,
+        "haZona": 4.278
+      },
+      {
+        "m": 3.3,
+        "ha2": 62857.142857142855,
+        "haZona": 7.854
+      },
+      {
+        "m": 3.5999984999999994,
+        "ha2": 68571.4,
+        "haZona": 8.745
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 85,
+        "haZona": 4.278
+      },
+      {
+        "kgha": 98,
+        "haZona": 7.854
+      },
+      {
+        "kgha": 110,
+        "haZona": 8.745
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 20.877,
+      "totalSemillas": 1321496.893,
+      "avgHa": 63299.17579154093,
+      "avgM": 3.3232067290558986
+    },
+    "fertTotals": {
+      "totalHa": 20.877,
+      "totalKg": 2095.272,
+      "avgHa": 100.36269578962495
+    }
+  },
+  {
+    "id": "l1782791426506489",
+    "cliente": "Savino Luna",
+    "granja": "Santa Monica",
+    "lote": "Lote 12",
+    "variedad": "SRM 566 VTPRO",
+    "campana": "2026",
+    "date": "30/6/2026 12:50 a. m.",
+    "separationCm": 52.5,
+    "siembraZonas": [
+      {
+        "m": 2.8,
+        "ha2": 53333.333333333336,
+        "haZona": 5.045
+      },
+      {
+        "m": 3.3,
+        "ha2": 62857.142857142855,
+        "haZona": 8.437
+      },
+      {
+        "m": 3.5,
+        "ha2": 66666.66666666667,
+        "haZona": 9.222
+      }
+    ],
+    "fertZonas": [
+      {
+        "kgha": 85,
+        "haZona": 5.045
+      },
+      {
+        "kgha": 98,
+        "haZona": 8.437
+      },
+      {
+        "kgha": 110,
+        "haZona": 9.222
+      }
+    ],
+    "siembraTotals": {
+      "totalHa": 22.704,
+      "totalSemillas": 1414192.3809523808,
+      "avgHa": 62288.2479277828,
+      "avgM": 3.270133016208597
+    },
+    "fertTotals": {
+      "totalHa": 22.704,
+      "totalKg": 2270.071,
+      "avgHa": 99.98550916138124
+    }
+  }
+]
