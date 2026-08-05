@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campo Tools · chumbed10s</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:      #060a12;
+  --surface: #0d1525;
+  --border:  #182236;
+  --border2: #243348;
+  --text:    #c8dff5;
+  --muted:   #4e6a8a;
+  --dim:     #2a3f58;
+  --mono:    'JetBrains Mono', monospace;
+  --c1:      #00c9a7; /* teal  — SHP converter */
+  --c2:      #69db7c; /* verde — densidad siembra */
+}
+
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Fondo: grid tipo raster GIS ──────────────────── */
+body {
+  background-image:
+    linear-gradient(rgba(0,201,167,.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,201,167,.028) 1px, transparent 1px),
+    radial-gradient(ellipse 80% 60% at 20% 0%,  rgba(0,201,167,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 100%, rgba(105,219,124,.05) 0%, transparent 60%);
+  background-size: 32px 32px, 32px 32px, 100% 100%, 100% 100%;
+}
+
+/* ── Layout ───────────────────────────────────────── */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px 64px;
+  gap: 56px;
+}
+
+/* ── Header ───────────────────────────────────────── */
+.header {
+  text-align: center;
+  animation: fadeUp .6s ease both;
+}
+
+.header-eyebrow {
+  font-size: 10.5px;
+  font-weight: 600;
+  font-family: var(--mono);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.header-eyebrow::before,
+.header-eyebrow::after {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--dim);
+}
+
+.header-title {
+  font-size: clamp(36px, 6vw, 60px);
+  font-weight: 900;
+  letter-spacing: -2.5px;
+  line-height: 1;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.header-title em {
+  font-style: normal;
+  color: var(--c1);
+}
+
+.header-sub {
+  font-size: 14px;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-weight: 400;
+}
+.header-sub a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--dim);
+  transition: color .2s, border-color .2s;
+}
+.header-sub a:hover { color: var(--text); border-color: var(--text); }
+
+/* ── Cards grid ───────────────────────────────────── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 380px));
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+  max-width: 820px;
+}
+
+/* ── Card ─────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  animation: fadeUp .6s ease both;
+  position: relative;
+}
+.card:nth-child(2) { animation-delay: .1s; }
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--card-accent);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.5),
+    0 0 0 1px var(--card-accent),
+    0 0 40px color-mix(in srgb, var(--card-accent) 18%, transparent);
+}
+
+/* Top accent bar */
+.card-bar {
+  height: 3px;
+  background: var(--card-accent);
+  flex-shrink: 0;
+}
+
+/* Illustration area */
+.card-art {
+  padding: 28px 28px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-art svg {
+  width: 100%;
+  max-width: 280px;
+  height: 120px;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 12px;
+}
+
+/* Content */
+.card-body {
+  padding: 22px 24px 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card-label {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--mono);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--card-accent);
+  opacity: .8;
+}
+
+.card-title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -.6px;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.tag {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: var(--mono);
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: var(--border);
+  border: 1px solid var(--border2);
+  color: var(--muted);
+}
+
+.card-cta {
+  margin-top: 4px;
+  padding: 11px 16px;
+  border-radius: 9px;
+  border: 1px solid var(--card-accent);
+  background: color-mix(in srgb, var(--card-accent) 10%, transparent);
+  color: var(--card-accent);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background .2s, color .2s;
+  letter-spacing: -.2px;
+}
+.card:hover .card-cta {
+  background: var(--card-accent);
+  color: #05140f;
+}
+.card-cta-arrow {
+  font-size: 16px;
+  transition: transform .2s;
+}
+.card:hover .card-cta-arrow { transform: translateX(3px); }
+
+/* ── Footer ───────────────────────────────────────── */
+.footer {
+  text-align: center;
+  animation: fadeUp .6s .2s ease both;
+}
+.footer-text {
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.footer-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--dim);
+}
+.footer-text a { color: var(--dim); text-decoration: none; transition: color .2s; }
+.footer-text a:hover { color: var(--muted); }
+
+/* ── Animation ────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Mobile ───────────────────────────────────────── */
+@media (max-width: 520px) {
+  .page { padding: 36px 16px 48px; gap: 40px; }
+  .header-title { letter-spacing: -1.5px; }
+  .cards { grid-template-columns: 1fr; max-width: 420px; }
+}
+</style>
+</head>
+<body>
+<main class="page">
+
+  <!-- ── Header ──────────────────────────────────── -->
+  <header class="header">
+    <div class="header-eyebrow">chumbed10s</div>
+    <h1 class="header-title">Campo<em>Tools</em></h1>
+    <p class="header-sub">
+      Herramientas geoespaciales · 100% client-side ·
+      <a href="https://github.com/chumbed10s" target="_blank" rel="noopener">GitHub ↗</a>
+    </p>
+  </header>
+
+  <!-- ── Cards ───────────────────────────────────── -->
+  <div class="cards">
+
+    <!-- Card 1: SHP Converter -->
+    <a class="card" href="./shp-converter/" style="--card-accent: var(--c1)">
+      <div class="card-bar"></div>
+      <div class="card-art">
+        <!-- Mini-mapa con polígonos de distintos colores -->
+        <svg viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- Grid lines -->
+          <line x1="0" y1="25" x2="260" y2="25" stroke="#182236" stroke-width="1"/>
+          <line x1="0" y1="50" x2="260" y2="50" stroke="#182236" stroke-width="1"/>
+          <line x1="0" y1="75" x2="260" y2="75" stroke="#182236" stroke-width="1"/>
+          <line x1="65"  y1="0" x2="65"  y2="100" stroke="#182236" stroke-width="1"/>
+          <line x1="130" y1="0" x2="130" y2="100" stroke="#182236" stroke-width="1"/>
+          <line x1="195" y1="0" x2="195" y2="100" stroke="#182236" stroke-width="1"/>
+          <!-- Polígono 1 — teal -->
+          <polygon points="8,8 58,5 62,42 4,46" fill="#00c9a7" fill-opacity=".25" stroke="#00c9a7" stroke-width="1.5" stroke-linejoin="round"/>
+          <!-- Polígono 2 — amarillo -->
+          <polygon points="68,4 122,8 128,38 72,44" fill="#ffd43b" fill-opacity=".25" stroke="#ffd43b" stroke-width="1.5" stroke-linejoin="round"/>
+          <!-- Polígono 3 — naranja -->
+          <polygon points="134,6 190,10 186,46 130,42" fill="#ffa94d" fill-opacity=".25" stroke="#ffa94d" stroke-width="1.5" stroke-linejoin="round"/>
+          <!-- Polígono 4 — rojo -->
+          <polygon points="198,4 254,8 252,44 196,42" fill="#ff6b6b" fill-opacity=".25" stroke="#ff6b6b" stroke-width="1.5" stroke-linejoin="round"/>
+          <!-- Polígono 5 — verde claro -->
+          <polygon points="6,52 60,54 56,94 4,92" fill="#69db7c" fill-opacity=".25" stroke="#69db7c" stroke-width="1.5" stroke-linejoin="round"/>
+          <!-- Polígono 6 — azul -->
+          <polygon points="68,54 126,50 130,90 72,94" fill="#4dabf7" fill-opacity=".25" stroke="#4dabf7" stroke-width="1.5" stroke-linejoin="round"/>
+          <!-- Polígono 7 — violeta -->
+          <polygon points="136,52 192,54 188,92 132,90" fill="#cc5de8" fill-opacity=".25" stroke="#cc5de8" stroke-width="1.5" stroke-linejoin="round"/>
+          <!-- Polígono 8 — rosa -->
+          <polygon points="200,50 254,54 252,92 198,94" fill="#f783ac" fill-opacity=".25" stroke="#f783ac" stroke-width="1.5" stroke-linejoin="round"/>
+          <!-- Labels ha -->
+          <text x="33"  y="78" font-family="JetBrains Mono,monospace" font-size="7" fill="#00c9a7" fill-opacity=".7" text-anchor="middle">347 ha</text>
+          <text x="97"  y="78" font-family="JetBrains Mono,monospace" font-size="7" fill="#ffd43b" fill-opacity=".7" text-anchor="middle">208 ha</text>
+          <text x="160" y="78" font-family="JetBrains Mono,monospace" font-size="7" fill="#ffa94d" fill-opacity=".7" text-anchor="middle">512 ha</text>
+          <text x="226" y="78" font-family="JetBrains Mono,monospace" font-size="7" fill="#ff6b6b" fill-opacity=".7" text-anchor="middle">189 ha</text>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-label">Herramienta GIS</div>
+        <h2 class="card-title">Conversor<br>KMZ / SHP</h2>
+        <p class="card-desc">
+          Cargá archivos KMZ, KML o Shapefile y visualizalos en el mapa.
+          Calculá hectáreas, aplicá mapas coropléticos por campo y exportá
+          en formato SHP con DBF, SHX y PRJ incluidos.
+        </p>
+        <div class="card-tags">
+          <span class="tag">GIS</span>
+          <span class="tag">KMZ → SHP</span>
+          <span class="tag">Hectáreas</span>
+          <span class="tag">Choroplético</span>
+          <span class="tag">Leaflet</span>
+        </div>
+        <div class="card-cta">
+          Abrir herramienta
+          <span class="card-cta-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 2: Densidad de Siembra -->
+    <a class="card" href="./densidad_siembra/" style="--card-accent: var(--c2)">
+      <div class="card-bar"></div>
+      <div class="card-art">
+        <!-- Grilla de plantas estilizada -->
+        <svg viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- Fondo con hileras -->
+          <rect x="0" y="0" width="260" height="100" fill="none"/>
+          <!-- Líneas de surco -->
+          <line x1="0" y1="16" x2="260" y2="16" stroke="#1a2f1e" stroke-width="6"/>
+          <line x1="0" y1="38" x2="260" y2="38" stroke="#1a2f1e" stroke-width="6"/>
+          <line x1="0" y1="60" x2="260" y2="60" stroke="#1a2f1e" stroke-width="6"/>
+          <line x1="0" y1="82" x2="260" y2="82" stroke="#1a2f1e" stroke-width="6"/>
+          <!-- Plantas fila 1 -->
+          <g fill="#69db7c" fill-opacity=".9">
+            <circle cx="14"  cy="16" r="4.5"/>
+            <circle cx="38"  cy="16" r="4.5"/>
+            <circle cx="62"  cy="16" r="4.5"/>
+            <circle cx="86"  cy="16" r="4.5"/>
+            <circle cx="110" cy="16" r="4.5"/>
+            <circle cx="134" cy="16" r="4.5"/>
+            <circle cx="158" cy="16" r="4.5"/>
+            <circle cx="182" cy="16" r="4.5"/>
+            <circle cx="206" cy="16" r="4.5"/>
+            <circle cx="230" cy="16" r="4.5"/>
+            <circle cx="254" cy="16" r="4.5"/>
+          </g>
+          <!-- Plantas fila 2 -->
+          <g fill="#69db7c" fill-opacity=".9">
+            <circle cx="14"  cy="38" r="4.5"/>
+            <circle cx="38"  cy="38" r="4.5"/>
+            <circle cx="62"  cy="38" r="4.5"/>
+            <circle cx="86"  cy="38" r="4.5"/>
+            <circle cx="110" cy="38" r="4.5"/>
+            <circle cx="134" cy="38" r="4.5"/>
+            <circle cx="158" cy="38" r="4.5"/>
+            <circle cx="182" cy="38" r="4.5"/>
+            <circle cx="206" cy="38" r="4.5"/>
+            <circle cx="230" cy="38" r="4.5"/>
+            <circle cx="254" cy="38" r="4.5"/>
+          </g>
+          <!-- Plantas fila 3 — densidad diferente (más juntas) -->
+          <g fill="#2ecc71" fill-opacity=".9">
+            <circle cx="10"  cy="60" r="4.5"/>
+            <circle cx="28"  cy="60" r="4.5"/>
+            <circle cx="46"  cy="60" r="4.5"/>
+            <circle cx="64"  cy="60" r="4.5"/>
+            <circle cx="82"  cy="60" r="4.5"/>
+            <circle cx="100" cy="60" r="4.5"/>
+            <circle cx="118" cy="60" r="4.5"/>
+            <circle cx="136" cy="60" r="4.5"/>
+            <circle cx="154" cy="60" r="4.5"/>
+            <circle cx="172" cy="60" r="4.5"/>
+            <circle cx="190" cy="60" r="4.5"/>
+            <circle cx="208" cy="60" r="4.5"/>
+            <circle cx="226" cy="60" r="4.5"/>
+            <circle cx="244" cy="60" r="4.5"/>
+          </g>
+          <!-- Plantas fila 4 -->
+          <g fill="#69db7c" fill-opacity=".9">
+            <circle cx="14"  cy="82" r="4.5"/>
+            <circle cx="38"  cy="82" r="4.5"/>
+            <circle cx="62"  cy="82" r="4.5"/>
+            <circle cx="86"  cy="82" r="4.5"/>
+            <circle cx="110" cy="82" r="4.5"/>
+            <circle cx="134" cy="82" r="4.5"/>
+            <circle cx="158" cy="82" r="4.5"/>
+            <circle cx="182" cy="82" r="4.5"/>
+            <circle cx="206" cy="82" r="4.5"/>
+            <circle cx="230" cy="82" r="4.5"/>
+            <circle cx="254" cy="82" r="4.5"/>
+          </g>
+          <!-- Overlay label -->
+          <rect x="160" y="52" width="92" height="14" rx="3" fill="rgba(6,10,18,.8)"/>
+          <text x="206" y="62" font-family="JetBrains Mono,monospace" font-size="8" fill="#69db7c" fill-opacity=".85" text-anchor="middle">77.000 sem/ha</text>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-label">Herramienta de campo</div>
+        <h2 class="card-title">Densidad<br>de Siembra</h2>
+        <p class="card-desc">
+          Calculá la densidad óptima de siembra por lote. Ingresá parámetros
+          de distancia entre hileras y plantas para obtener semillas por
+          hectárea y visualizar la distribución en campo.
+        </p>
+        <div class="card-tags">
+          <span class="tag">Siembra</span>
+          <span class="tag">Lotes</span>
+          <span class="tag">sem/ha</span>
+          <span class="tag">Cultivos</span>
+        </div>
+        <div class="card-cta">
+          Abrir herramienta
+          <span class="card-cta-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ── Footer ──────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-text">
+      <span>2 herramientas</span>
+      <span class="footer-dot"></span>
+      <span>client-side · sin backend</span>
+      <span class="footer-dot"></span>
+      <a href="https://github.com/chumbed10s" target="_blank" rel="noopener">github.com/chumbed10s</a>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>
