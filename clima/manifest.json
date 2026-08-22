@@ -1,0 +1,15 @@
+{
+  "name": "Clima",
+  "short_name": "Clima",
+  "description": "Pronóstico del tiempo — actual, por hora y por día, con ubicaciones guardadas.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0a1120",
+  "theme_color": "#3b82f6",
+  "lang": "es",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

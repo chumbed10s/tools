@@ -6,6 +6,12 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "8129", "--directory", "shp-converter"],
       "port": 8129
+    },
+    {
+      "name": "clima",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8135", "--directory", "clima"],
+      "port": 8135
     }
   ]
 }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Clima</title>
+<meta name="theme-color" content="#3b82f6">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <header class="hdr">
+    <button id="location-btn" class="hdr-location">
+      <span id="location-name">Cargando…</span>
+      <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+    </button>
+    <div class="hdr-actions">
+      <button id="refresh-btn" class="icon-btn" title="Actualizar">
+        <i class="fa-solid fa-arrows-rotate"></i>
+      </button>
+      <button id="theme-toggle" class="icon-btn" title="Tema"></button>
+    </div>
+  </header>
+
+  <div id="offline-banner" class="offline-banner" hidden></div>
+
+  <main id="main" class="main">
+    <section class="hero" id="hero"></section>
+
+    <section class="block">
+      <h2 class="section-title">Próximos días</h2>
+      <div class="daily-list" id="daily-list"></div>
+    </section>
+
+    <footer class="app-footer">Datos: <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo.com</a> · Actualizado <span id="last-updated">—</span></footer>
+  </main>
+
+  <div class="modal-overlay" id="location-modal" hidden>
+    <div class="modal-card location-modal">
+      <div class="modal-top">
+        <span class="modal-title">Ubicaciones</span>
+        <button class="modal-close" id="location-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <button class="gps-btn" id="gps-btn">
+          <i class="fa-solid fa-location-crosshairs"></i>
+          Usar mi ubicación
+        </button>
+        <input class="search-input" id="location-search" placeholder="Buscar ciudad…" autocomplete="off">
+        <div id="search-results" class="search-results"></div>
+        <div class="saved-label">Guardadas</div>
+        <div id="saved-list" class="saved-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="loading-overlay" class="loading-overlay" hidden>
+    <div class="spinner"></div>
+  </div>
+</div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
