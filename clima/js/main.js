@@ -246,9 +246,6 @@ window.addEventListener('request-notifications',requestNotifications);
 
 initGeoWatch({onMoved:async()=>{syncHeader();await loadWeather(state.activeLocationId);}});
 
-// ── Pull to refresh ──────────────────────────────────────
-initPullToRefresh($('view'),refreshActive);
-
 // ── Notificaciones (progresivo, sin backend) ─────────────
 async function requestNotifications(){
   if(!('Notification'in window)){toast('Este navegador no soporta notificaciones',{iconName:'alert'});return;}
@@ -295,49 +292,3 @@ if('serviceWorker'in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 }
 
-// ── helpers ──────────────────────────────────────────────
-// Pull-to-refresh deliberado: sólo si el gesto arranca con la vista arriba de
-// todo, es claramente vertical, y se arrastra bastante. Con resistencia.
-function initPullToRefresh(scroller,onRefresh){
-  const TRIGGER=150;       // px de arrastre real para disparar
-  const DEADZONE=16;       // px antes de "armar" el gesto
-  let sx=0,sy=0,armed=false,aborted=true,ind=null,busy=false;
-
-  scroller.addEventListener('touchstart',e=>{
-    if(busy||e.touches.length>1){aborted=true;return;}
-    sx=e.touches[0].clientX; sy=e.touches[0].clientY;
-    aborted=scroller.scrollTop>0;   // sólo cuenta si ya estás arriba de todo
-    armed=false;
-  },{passive:true});
-
-  scroller.addEventListener('touchmove',e=>{
-    if(aborted||busy)return;
-    const dx=e.touches[0].clientX-sx, dy=e.touches[0].clientY-sy;
-    if(!armed){
-      if(scroller.scrollTop>0 || dy<DEADZONE){ if(Math.abs(dx)>Math.abs(dy)) aborted=true; return; }
-      if(Math.abs(dx)>Math.abs(dy)*0.8){aborted=true;return;}   // intención horizontal
-      armed=true;
-      ind=document.createElement('div');ind.className='ptr';
-      ind.innerHTML=icon('refresh',{size:18});
-      document.getElementById('app').appendChild(ind);
-    }
-    const pull=Math.max(0,dy-DEADZONE);
-    const shown=Math.min(72, Math.pow(pull,0.82)*0.9);  // resistencia
-    ind.style.transform=`translateX(-50%) translateY(${shown}px) rotate(${pull*1.4}deg)`;
-    ind.style.opacity=Math.min(1,pull/TRIGGER);
-    ind.classList.toggle('ready',pull>=TRIGGER);
-  },{passive:true});
-
-  scroller.addEventListener('touchend',e=>{
-    if(!armed||aborted){cleanup();return;}
-    const dy=e.changedTouches[0].clientY-sy;
-    if(dy-DEADZONE>=TRIGGER){
-      busy=true;
-      ind.classList.add('spin');
-      Promise.resolve(onRefresh()).finally(()=>{busy=false;cleanup();});
-    }else cleanup();
-    armed=false;
-  });
-
-  function cleanup(){ind?.remove();ind=null;armed=false;}
-}

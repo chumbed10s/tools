@@ -640,10 +640,6 @@ img.wi{display:block;flex-shrink:0}
 /* ── Loading / PTR / empty ── */
 .loading-overlay{position:fixed;inset:0;background:rgba(15,11,6,.3);z-index:400;display:flex;align-items:center;justify-content:center}
 .spinner{width:34px;height:34px;border-radius:50%;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;animation:spin .7s linear infinite}
-.ptr{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:34px;height:34px;border-radius:50%;
-  background:var(--glass-2);backdrop-filter:blur(10px);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;color:var(--accent);z-index:30}
-.ptr.ready{background:var(--accent);color:#fff}
-.ptr.spin svg{animation:spin .7s linear infinite}
 .empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding:56px 20px;color:var(--muted-2);text-align:center}
 .empty p{font-size:12.5px}
 
