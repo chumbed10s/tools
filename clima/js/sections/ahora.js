@@ -42,19 +42,19 @@ export function render(el){
       </div>
     </div>`).join('')}</div>`:'';
 
-  // ── hero: sobre el cielo, sin tarjeta ──
+  // ── hero: tarjeta translúcida sobre el cielo ──
   const hero=`
    <div class="hero" data-cat="${cat}" data-reveal>
     <div class="hero-body">
-      <div class="hero-figure">${weatherIconSVG(c.weather_code,{size:136,isDay:!!c.is_day})}</div>
+      <div class="hero-figure">${weatherIconSVG(c.weather_code,{size:118,isDay:!!c.is_day})}</div>
       <div class="hero-read">
         <div class="hero-temp"><span data-count="${tempC(c.temperature_2m)}" data-suffix="°">0°</span></div>
         <div class="hero-cond">${wmoLabel(c.weather_code)}</div>
         <div class="hero-minmax">
-          <span class="hmm hmm-max">${icon('thermometer-up',{size:13})} <b>${temp(d.temperature_2m_max[di])}</b></span>
-          <span class="hmm hmm-min">${icon('thermometer-down',{size:13})} <b>${temp(d.temperature_2m_min[di])}</b></span>
+          <span class="hmm hmm-max">${icon('thermometer-up',{size:14})}<em>Máx</em><b>${temp(d.temperature_2m_max[di])}</b></span>
+          <span class="hmm hmm-min">${icon('thermometer-down',{size:14})}<em>Mín</em><b>${temp(d.temperature_2m_min[di])}</b></span>
         </div>
-        <div class="hero-sub">${term('apparent_temp','Sensación')} ${temp(c.apparent_temperature)}</div>
+        <div class="hero-sub">${term('apparent_temp','Sensación térmica')} <b>${temp(c.apparent_temperature)}</b></div>
       </div>
     </div>
    </div>`;
