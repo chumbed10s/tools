@@ -1,7 +1,7 @@
 // Service Worker: deja la app instalable y utilizable sin conexión. Con todo el
 // shell + íconos + fuentes en el mismo origen, el offline es confiable.
-const SHELL_CACHE='clima-shell-v5';
-const RUNTIME_CACHE='clima-runtime-v5';
+const SHELL_CACHE='clima-shell-v6';
+const RUNTIME_CACHE='clima-runtime-v6';
 
 const WX=['clear-day','clear-night','partly-cloudy-day','partly-cloudy-night','overcast-day',
   'overcast-night','fog-day','fog-night','drizzle','sleet','rain','extreme-day-rain',

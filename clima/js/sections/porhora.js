@@ -8,6 +8,7 @@ import {deltaTSeries} from '../agro/meteo.js';
 import {getProfile} from '../agro/profiles.js';
 import {evaluateRange} from '../agro/engine.js';
 import {chart,wireChart} from '../charts.js';
+import {dayDigest} from '../digest.js';
 import {reveal,drawPaths} from '../anim.js';
 import {refreshCurrent} from '../router.js';
 import {card,icon,term,weatherIconSVG,windArrow,windChip,emptyState} from './common.js';
@@ -69,8 +70,22 @@ export function render(el){
     if(ds>=h.time.length)break;
     const de=Math.min(h.time.length,ds+24);
     const dateStr=h.time[ds].slice(0,10);
-    let mn=Infinity,mx=-Infinity,psum=0,wmax=0;
-    for(let i=ds;i<de;i++){mn=Math.min(mn,h.temperature_2m[i]);mx=Math.max(mx,h.temperature_2m[i]);psum+=h.precipitation[i]||0;wmax=Math.max(wmax,h.wind_speed_10m[i]);}
+    const dailyIdx=data.daily.time.indexOf(dateStr);
+    let mn=Infinity,mx=-Infinity,psum=0,wmax=0,gmax=0,rhSum=0,rhN=0,uvmax=0,pprobMax=0;
+    for(let i=ds;i<de;i++){
+      mn=Math.min(mn,h.temperature_2m[i]);mx=Math.max(mx,h.temperature_2m[i]);
+      psum+=h.precipitation[i]||0;wmax=Math.max(wmax,h.wind_speed_10m[i]);gmax=Math.max(gmax,h.wind_gusts_10m[i]||0);
+      if(h.relative_humidity_2m[i]!=null){rhSum+=h.relative_humidity_2m[i];rhN++;}
+      uvmax=Math.max(uvmax,h.uv_index[i]||0);pprobMax=Math.max(pprobMax,h.precipitation_probability[i]||0);
+    }
+    const rhAvg=rhN?Math.round(rhSum/rhN):null;
+    const dayTags=`<div class="day-tags">
+      <span class="dtag dtag-temp">${icon('thermometer',{size:11})}${temp(mn,{unit:false})}–${temp(mx)}</span>
+      <span class="dtag dtag-rain">${icon('cloud-rain',{size:11})}${rain(psum)}${pprobMax>=15?` · ${pprobMax}%`:''}</span>
+      <span class="dtag dtag-wind">${icon('wind',{size:11})}${wind(wmax)}${gmax>wmax+8?` · r${round(gmax)}`:''}</span>
+      ${rhAvg!=null?`<span class="dtag dtag-hum">${icon('droplet',{size:11})}${rhAvg}%</span>`:''}
+      <span class="dtag dtag-uv">${icon('uv',{size:11})}UV ${round(uvmax)}</span>
+    </div>`;
 
     const {series,yUnit,y2Unit}=seriesFor(h,ds,de);
     const nowRel=(nowIdx>=ds&&nowIdx<de)?nowIdx-ds:-1;
@@ -94,14 +109,19 @@ export function render(el){
       </div>`;
     }
 
+    const dg=dailyIdx>=0?dayDigest(data,dailyIdx):[];
+    const dgHTML=dg.length?`<ul class="day-digest">${dg.map(it=>`
+      <li class="dg${it.tone?` dg-${it.tone}`:''}"><span class="dg-ic">${icon(it.iconName,{size:12})}</span><span>${it.text}</span></li>`).join('')}</ul>`:'';
+
     blocks+=`<section class="pday-block" data-reveal data-dstart="${ds}">
       <header class="day-sticky">
         <span class="day-sticky-name">${fmtDayLong(dateStr)}</span>
-        <span class="day-sticky-sum">${temp(mn)}/${temp(mx)} · ${icon('droplet',{size:11})}${rain(psum)} · ${icon('wind',{size:11})}${wind(wmax)}</span>
+        ${dayTags}
       </header>
       <div class="pday-chart">
         <div class="chart-reading" data-dayreading>Tocá el gráfico para leer una hora</div>
         ${chartHTML}
+        ${dgHTML}
       </div>
       <div class="hr-list">${rows}</div>
     </section>`;

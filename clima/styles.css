@@ -193,6 +193,20 @@ img.wi{display:block;flex-shrink:0}
 .dg-warn .dg-ic{background:var(--warn-bg);color:var(--warn)}
 .dg-warn{font-weight:600}
 
+/* ── Historial ── */
+.wrap-hist{display:block}
+.hist-kpis{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.hist-kpi{background:var(--inset);border-radius:12px;padding:10px 8px;text-align:center;display:flex;flex-direction:column;gap:2px}
+.hist-kpi b{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums}
+.hist-kpi b.pos{color:var(--go)} .hist-kpi b.neg{color:var(--no)}
+.hist-kpi small{font-size:9px;color:var(--muted);font-weight:600;line-height:1.25}
+.hist-weeks{display:flex;flex-direction:column;gap:9px}
+.hist-w{padding:10px 0;border-top:1px solid var(--border)}
+.hist-w:first-child{border-top:none;padding-top:2px}
+.hist-w-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:7px}
+.hist-w-h b{font-size:12px;font-weight:800}
+.hist-w-h span{font-size:10px;color:var(--muted-2);font-weight:700;font-variant-numeric:tabular-nums}
+
 /* ── Semáforo ── */
 .sem{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px}
 .sem-dot{width:7px;height:7px;border-radius:50%;background:currentColor}
@@ -334,7 +348,8 @@ img.wi{display:block;flex-shrink:0}
 .ch-axis{font-size:9px;fill:var(--muted-2);font-weight:600}
 .ch-axis-day{fill:var(--muted);font-weight:800}
 .ch-line{transition:stroke-dashoffset .9s var(--ease)}
-.ch-wdir path{stroke:var(--surface);stroke-width:1;paint-order:stroke}
+.ch-wdir-bg{fill:var(--surface);stroke:var(--border-2);stroke-width:1}
+.ch-wdir-arr{stroke:var(--surface);stroke-width:.6;paint-order:stroke}
 .ch-bar{transform-origin:bottom;animation:barGrow .55s var(--ease) both}
 @keyframes barGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 @media (prefers-reduced-motion:reduce){.ch-bar{animation:none}}
@@ -353,10 +368,22 @@ img.wi{display:block;flex-shrink:0}
 /* ── Por hora ── */
 .pday-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
 .day-sticky{position:sticky;top:0;z-index:5;background:var(--surface-2);
-  border-bottom:1px solid var(--border);padding:11px 14px;display:flex;flex-direction:column;gap:2px}
+  border-bottom:1px solid var(--border);padding:10px 13px 11px;display:flex;flex-direction:column;gap:7px}
 .day-sticky-name{font-size:14px;font-weight:750;letter-spacing:-.01em}
-.day-sticky-sum{font-size:10px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
-.pday-chart{padding:10px 12px 2px;border-bottom:1px solid var(--border)}
+.day-tags{display:flex;flex-wrap:wrap;gap:5px}
+.dtag{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:800;font-variant-numeric:tabular-nums;
+  padding:3px 7px;border-radius:7px;background:var(--inset);color:var(--muted)}
+.dtag .ic{opacity:.8}
+.dtag-rain,.dtag-hum{color:var(--rain);background:color-mix(in srgb,var(--rain) 12%,transparent)}
+.dtag-wind{color:var(--accent);background:var(--accent-soft)}
+.dtag-temp{color:var(--ink);background:var(--inset)}
+.dtag-uv{color:var(--warn);background:var(--warn-bg)}
+.dtag-frost{color:var(--rain);background:color-mix(in srgb,var(--rain) 15%,transparent)}
+.dtag-hot{color:var(--no);background:var(--no-bg)}
+.pday-chart{padding:10px 12px 8px;border-bottom:1px solid var(--border)}
+.day-digest{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:8px;padding-top:9px;border-top:1px solid var(--border)}
+.day-digest .dg{font-size:11px;font-weight:500}
+.day-digest .dg-ic{width:19px;height:19px;border-radius:6px}
 .pday-chart .chart-reading{font-size:11px;font-weight:700;min-height:15px;margin-bottom:2px}
 .hr{border-bottom:1px solid var(--border);transition:background .3s var(--ease)}
 .hr:last-child{border-bottom:none}

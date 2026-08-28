@@ -126,18 +126,20 @@ export function chart(cfg){
     });
   });
 
-  // ── flechas de dirección de viento sobre la línea ──
+  // ── flechas de dirección de viento sobre la línea (con disco de fondo) ──
   let wdir='';
   series.forEach(s=>{
     if(!s.dirs)return;
     const Y=s.axis==='right'?YR:YL;
-    const step=Math.max(1,Math.ceil(n/18));
+    const step=Math.max(1,Math.ceil(n/16));
     for(let i=0;i<n;i+=step){
       const v=s.values[i], deg=s.dirs[i];
       if(v==null||deg==null)continue;
       const to=(Math.round(deg)+180)%360;
-      wdir+=`<g class="ch-wdir" transform="translate(${X(i).toFixed(1)} ${Y(v).toFixed(1)}) rotate(${to})">`
-        +`<path d="M0 -4.6 L3.4 4.2 L0 2 L-3.4 4.2 Z" style="fill:${s.color}"/></g>`;
+      const x=X(i).toFixed(1), y=Y(v).toFixed(1);
+      wdir+=`<g class="ch-wdir">`
+        +`<circle class="ch-wdir-bg" cx="${x}" cy="${y}" r="7.5"/>`
+        +`<path class="ch-wdir-arr" transform="translate(${x} ${y}) rotate(${to})" d="M0 -5 L3.6 4.6 L0 2 L-3.6 4.6 Z" style="fill:${s.color}"/></g>`;
     }
   });
 

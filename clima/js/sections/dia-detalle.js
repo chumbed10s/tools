@@ -5,6 +5,7 @@ import {temp,wind,pct,rain,cardinal,fmtHour,fmtDayLong,hours as fmtHours,round} 
 import {deltaTSeries,inversionSeries,frostByDay} from '../agro/meteo.js';
 import {getProfiles,getProfile} from '../agro/profiles.js';
 import {dayRollup} from '../agro/engine.js';
+import {dayDigest} from '../digest.js';
 import {chart,wireChart} from '../charts.js';
 import {reveal,drawPaths,countUpAll} from '../anim.js';
 import {card,icon,term,weatherIconSVG,windArrow,windDial,metricTile,semaphore} from './common.js';
@@ -77,6 +78,11 @@ export function renderDayDetail(el,dayIdx){
   ];
   const statsCard=card(`<div class="mtiles">${stats.join('')}</div>`,{title:'Resumen del día',cls:'card-tiles'});
 
+  const dg=dayDigest(data,dayIdx);
+  const digestCard=dg.length?card(`<ul class="digest">${dg.map(it=>`
+    <li class="dg${it.tone?` dg-${it.tone}`:''}"><span class="dg-ic">${icon(it.iconName,{size:14})}</span><span>${it.text}</span></li>`).join('')}</ul>`,
+    {title:'En pocas palabras',cls:'card-digest'}):'';
+
   // ── agro por perfil ──
   const frost=frostByDay(data,state.alerts.frostThreshold)[dayIdx];
   const invHours=inversionSeries(h).slice(start,start+count).filter(x=>x.flag).length;
@@ -106,7 +112,7 @@ export function renderDayDetail(el,dayIdx){
         ${isFuture?'<p class="hint">Precisión orientativa — está a más de 7 días.</p>':''}
       </div>
     </div>
-    ${statsCard}${agroCard}${tempCard}${precipCard}${windCard}${agroOn()?deltaCard:''}
+    ${digestCard}${statsCard}${agroCard}${tempCard}${precipCard}${windCard}${agroOn()?deltaCard:''}
   </div>`;
 
   ctx={hoursArr,start,slices:{

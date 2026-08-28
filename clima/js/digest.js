@@ -7,7 +7,7 @@ import {nowHourIndex,todayStartIndex,todayDailyIndex,wmoCategory} from './weathe
 import {temp,wind,rain,pct,fmtHour,round} from './format.js';
 import {deltaT,inversionSeries,frostByDay} from './agro/meteo.js';
 import {getProfile} from './agro/profiles.js';
-import {evaluateRange,bestBlocks} from './agro/engine.js';
+import {evaluateRange,bestBlocks,dayRollup} from './agro/engine.js';
 
 const P=0; // prioridad base
 
@@ -30,7 +30,9 @@ export function buildDigest(data){
       else if(s>=0 && i-e>2)break;
     }
     if(s>=0){
-      const cuando = s<=now+1 ? 'ahora mismo' : `de ${fmtHour(h.time[s])} a ${fmtHour(h.time[e])}`;
+      const cuando = s<=now+1 ? 'ahora mismo'
+        : e>s ? `de ${fmtHour(h.time[s])} a ${fmtHour(h.time[e+1]||h.time[e])}`
+        : `hacia las ${fmtHour(h.time[s])}`;
       const cuanto = mm>=1 ? ` (unos ${rain(mm)})` : '';
       add('cloud-rain',`Lluvia probable ${cuando}${cuanto}.`, mm>=12?'warn':'', 3);
     }else{
@@ -120,6 +122,67 @@ export function buildDigest(data){
   }
 
   return out.sort((a,b)=>a.prio-b.prio).slice(0,7);
+}
+
+// ── Digest acotado a un día concreto del pronóstico (para Semana / Por hora) ──
+export function dayDigest(data,dayIdx){
+  if(!data)return [];
+  const h=data.hourly, d=data.daily;
+  const date=d.time[dayIdx];
+  const s=h.time.findIndex(t=>t.slice(0,10)===date);
+  if(s<0)return [];
+  const e=Math.min(h.time.length,s+24);
+  const out=[]; const add=(i,t,tone='',p=5)=>out.push({iconName:i,text:t,tone,prio:p});
+
+  // temperatura + vs día previo
+  {
+    const hi=d.temperature_2m_max[dayIdx], lo=d.temperature_2m_min[dayIdx];
+    const prevHi=dayIdx>0?d.temperature_2m_max[dayIdx-1]:null;
+    let txt=`Entre ${temp(lo)} y ${temp(hi)}.`;
+    if(prevHi!=null){
+      const dd=Math.round(hi-prevHi);
+      if(dd>=3)txt=`Máxima ${temp(hi)}, ${dd}° más cálido que el día anterior.`;
+      else if(dd<=-3)txt=`Máxima ${temp(hi)}, ${-dd}° más fresco que el día anterior.`;
+    }
+    add('thermometer',txt,'',5);
+  }
+  // lluvia
+  {
+    let ws=-1,we=-1,mm=0;
+    for(let i=s;i<e;i++){
+      const wet=(h.precipitation_probability[i]||0)>=45||(h.precipitation[i]||0)>=0.25;
+      if(wet){if(ws<0)ws=i;we=i;mm+=h.precipitation[i]||0;}
+      else if(ws>=0&&i-we>2)break;
+    }
+    if(ws>=0){
+      const cuando = we>ws ? `de ${fmtHour(h.time[ws])} a ${fmtHour(h.time[we+1]||h.time[we])}` : `hacia las ${fmtHour(h.time[ws])}`;
+      add('cloud-rain',`Lluvia probable ${cuando}${mm>=1?` (~${rain(mm)})`:''}.`, mm>=12?'warn':'',4);
+    }
+    else add('sun','Día sin lluvia.','',7);
+  }
+  // viento
+  {
+    let pk=0,pkAt=s;
+    for(let i=s;i<e;i++)if(h.wind_speed_10m[i]>pk){pk=h.wind_speed_10m[i];pkAt=i;}
+    const dir=card8(h.wind_direction_10m[pkAt]);
+    if(pk>=25)add('wind',`Viento hasta ${wind(pk)} del ${dir} hacia ${fmtHour(h.time[pkAt])}.`, pk>=45?'warn':'',5);
+    else add('wind',`Viento flojo, máx ${wind(pk)} del ${dir}.`,'',7);
+  }
+
+  if(agroOn()){
+    const prof=getProfile(state.activeProfileId);
+    const frost=frostByDay(data,state.alerts.frostThreshold)[dayIdx];
+    if(frost&&frost.level!=='sin')add('thermometer-down',`${frost.level==='fuerte'?'Helada fuerte':'Riesgo de helada'} esa noche: ${temp(frost.min)} cerca de las ${fmtHour(frost.minAt)}.`, frost.level==='fuerte'?'warn':'',1);
+    const inv=inversionSeries(h); let iv=0;
+    for(let i=s;i<e;i++)if(inv[i]?.flag)iv++;
+    if(iv>=2)add('layers',`${iv} h con probable inversión térmica (de noche).`,'warn',3);
+    const roll=dayRollup(data,prof,dayIdx);
+    if(roll.best)add(prof.icon,`Mejor franja para ${prof.name.toLowerCase()}: ${fmtHour(h.time[roll.best.from])} a ${fmtHour(h.time[roll.best.to])}.`,'ok',2);
+    else add(prof.icon,`Sin ventana para ${prof.name.toLowerCase()} ese día.`,'',4);
+    const midDt=deltaT(h.temperature_2m[s+13]??h.temperature_2m[s],h.relative_humidity_2m[s+13]??h.relative_humidity_2m[s]);
+    add('et0',`Delta-T al mediodía ~${midDt.toFixed(1)} (${midDt>=2&&midDt<=8?'ideal':midDt<2?'muy bajo':'alto'}).`, (midDt<2||midDt>8)?'warn':'ok',6);
+  }
+  return out.sort((a,b)=>a.prio-b.prio).slice(0,agroOn()?6:4);
 }
 
 // ── helpers ──

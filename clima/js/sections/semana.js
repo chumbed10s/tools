@@ -35,13 +35,16 @@ export function render(el){
   const wkGust=Math.max(1,...d.wind_gusts_10m_max.slice(di));
   const nowTemp=data.current.temperature_2m;
 
-  const toggle=`<div class="seg">
-    <button class="seg-b${state.weekView==='list'?' active':''}" data-wv="list">${icon('list',{size:14})}Lista</button>
-    <button class="seg-b${state.weekView==='heatmap'?' active':''}" data-wv="heatmap">${icon('grid',{size:14})}Heatmap</button>
+  const toggle=`<div class="seg seg-sm">
+    <button class="seg-b${state.weekView==='list'?' active':''}" data-wv="list">${icon('list',{size:13})}Lista</button>
+    <button class="seg-b${state.weekView==='heatmap'?' active':''}" data-wv="heatmap">${icon('grid',{size:13})}Heatmap</button>
+    <button class="seg-b${state.weekView==='hist'?' active':''}" data-wv="hist">${icon('clock',{size:13})}Historial</button>
   </div>`;
 
   let bodyHTML;
-  if(state.weekView==='heatmap'){
+  if(state.weekView==='hist'){
+    bodyHTML=`<section class="card wrap-hist" data-reveal>${historyView(data)}</section>`;
+  }else if(state.weekView==='heatmap'){
     bodyHTML=heatmap(data,di,prof,frost);
   }else{
     let rows='';
@@ -133,6 +136,58 @@ function heatmap(data,di,prof,frost){
     <p class="hint">Tocá una celda para abrir ese día.</p>`;
 }
 const norm=(v,a,b)=>b>a?Math.max(0,Math.min(1,(v-a)/(b-a))):0.5;
+
+// ── Historial: agregados de los últimos ~28 días (usa el past_days del fetch) ──
+function historyView(data){
+  const h=data.hourly;
+  const today=data.current.time.slice(0,10);
+  const nowI=h.time.findIndex(t=>t.slice(0,10)===today);
+  if(nowI<7*24) return `<p class="hint">Todavía no hay suficiente historial en esta ubicación.</p>`;
+
+  const weeks=[];
+  for(let w=0;w<4;w++){
+    const b0=nowI-(w+1)*7*24, b1=nowI-w*7*24;
+    if(b0<0)break;
+    let rainT=0,et0T=0,wMax=0,gMax=0;
+    const dMin={},dMax={};
+    for(let i=b0;i<b1;i++){
+      rainT+=h.precipitation[i]||0;
+      et0T+=h.et0_fao_evapotranspiration?.[i]||0;
+      wMax=Math.max(wMax,h.wind_speed_10m[i]||0);
+      gMax=Math.max(gMax,h.wind_gusts_10m[i]||0);
+      const k=h.time[i].slice(0,10), t=h.temperature_2m[i];
+      if(t!=null){dMin[k]=Math.min(dMin[k]??99,t);dMax[k]=Math.max(dMax[k]??-99,t);}
+    }
+    const frostD=Object.values(dMin).filter(v=>v<=3).length;
+    const hotD=Object.values(dMax).filter(v=>v>=30).length;
+    weeks.push({from:h.time[b0].slice(0,10),to:h.time[b1-1].slice(0,10),rainT,bal:rainT-et0T,
+      wMax,gMax,frostD,hotD,tLo:Math.min(...Object.values(dMin)),tHi:Math.max(...Object.values(dMax))});
+  }
+  const mRain=weeks.reduce((s,w)=>s+w.rainT,0);
+  const mBal=weeks.reduce((s,w)=>s+w.bal,0);
+  const md=s=>{const x=new Date(s+'T12:00');return `${x.getDate()}/${x.getMonth()+1}`;};
+
+  return `
+    <div class="hist-kpis">
+      <div class="hist-kpi"><b>${rain(mRain)}</b><small>lluvia · 28 días</small></div>
+      <div class="hist-kpi"><b class="${mBal>=0?'pos':'neg'}">${mBal>=0?'+':''}${round(mBal)} mm</b><small>${term('et0','balance')} lluvia − ET0</small></div>
+      <div class="hist-kpi"><b>${weeks.reduce((s,w)=>s+w.frostD,0)}</b><small>días con helada (≤3°)</small></div>
+    </div>
+    <div class="hist-weeks">
+      ${weeks.map((w,idx)=>`<div class="hist-w">
+        <div class="hist-w-h"><b>${idx===0?'Últimos 7 días':`Hace ${idx+1} semanas`}</b><span>${md(w.from)}–${md(w.to)}</span></div>
+        <div class="day-tags">
+          <span class="dtag dtag-rain">${icon('cloud-rain',{size:11})}${rain(w.rainT)}</span>
+          <span class="dtag ${w.bal>=0?'dtag-hum':'dtag-uv'}">${icon('et0',{size:11})}${w.bal>=0?'+':''}${round(w.bal)}</span>
+          <span class="dtag dtag-wind">${icon('wind',{size:11})}${wind(w.wMax)}${w.gMax>w.wMax+8?` · r${round(w.gMax)}`:''}</span>
+          <span class="dtag dtag-temp">${icon('thermometer',{size:11})}${temp(w.tLo,{unit:false})}–${temp(w.tHi)}</span>
+          ${w.frostD?`<span class="dtag dtag-frost">${icon('thermometer-down',{size:11})}${w.frostD}</span>`:''}
+          ${w.hotD?`<span class="dtag dtag-hot">${icon('sun',{size:11})}${w.hotD}×+30°</span>`:''}
+        </div>
+      </div>`).join('')}
+    </div>
+    <p class="hint">Agregados de los últimos 28 días — historial de Open-Meteo, sin detalle hora a hora.</p>`;
+}
 
 export function mount(){
   reveal();
