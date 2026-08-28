@@ -38,7 +38,7 @@ function seriesFor(h,a,b){
     {key:'p',label:'Prob',values:sl(h.precipitation_probability),kind:'line',color:c1,unit:'%',axis:'right'},
   ],yUnit:'',y2Unit:'%'};
   return {series:[
-    {key:'w',label:'Viento',values:sl(h.wind_speed_10m),kind:'area',color:c1,unit:''},
+    {key:'w',label:'Viento',values:sl(h.wind_speed_10m),dirs:sl(h.wind_direction_10m),kind:'area',color:c1,unit:''},
     {key:'g',label:'Ráfaga',values:sl(h.wind_gusts_10m),kind:'dash',color:c2,unit:''},
   ],yUnit:'',y2Unit:''};
 }

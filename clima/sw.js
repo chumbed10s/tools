@@ -1,7 +1,7 @@
 // Service Worker: deja la app instalable y utilizable sin conexión. Con todo el
 // shell + íconos + fuentes en el mismo origen, el offline es confiable.
-const SHELL_CACHE='clima-shell-v4';
-const RUNTIME_CACHE='clima-runtime-v4';
+const SHELL_CACHE='clima-shell-v5';
+const RUNTIME_CACHE='clima-runtime-v5';
 
 const WX=['clear-day','clear-night','partly-cloudy-day','partly-cloudy-night','overcast-day',
   'overcast-night','fog-day','fog-night','drizzle','sleet','rain','extreme-day-rain',
@@ -16,7 +16,7 @@ const SHELL_FILES=[
   './js/main.js','./js/state.js','./js/storage.js','./js/format.js','./js/weather.js',
   './js/geocode.js','./js/icons.js','./js/ui-icons.js','./js/theme.js','./js/router.js',
   './js/anim.js','./js/toast.js','./js/glossary.js','./js/tooltip.js','./js/charts.js',
-  './js/backdrop.js','./js/minimap.js','./js/sun-arc.js','./js/alerts.js','./js/geo-watch.js',
+  './js/backdrop.js','./js/minimap.js','./js/sun-arc.js','./js/alerts.js','./js/digest.js','./js/geo-watch.js',
   './js/agro/meteo.js','./js/agro/profiles.js','./js/agro/engine.js',
   './js/sections/common.js','./js/sections/ahora.js','./js/sections/porhora.js',
   './js/sections/semana.js','./js/sections/dia-detalle.js','./js/sections/campo.js','./js/sections/ajustes.js',

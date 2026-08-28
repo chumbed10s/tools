@@ -6,6 +6,7 @@ import {deltaT,inversionSeries,frostByDay} from '../agro/meteo.js';
 import {getProfile} from '../agro/profiles.js';
 import {evaluateRange,statusLabel} from '../agro/engine.js';
 import {buildAlerts} from '../alerts.js';
+import {buildDigest} from '../digest.js';
 import {sunArcSVG} from '../sun-arc.js';
 import {reveal,countUpAll,drawPaths} from '../anim.js';
 import {go} from '../router.js';
@@ -31,16 +32,29 @@ export function render(el){
   const di=d.time.findIndex(t=>t===c.time.slice(0,10));
   const tonight=frost[di+1]||frost[di];
 
-  const alerts=buildAlerts(data);
-  const alertsHTML=alerts.length?`<div class="alerts">${alerts.map(a=>`
-    <div class="alert alert-${a.tone}" data-reveal>
-      <span class="alert-ic">${icon(a.iconName,{size:17})}</span>
-      <div class="alert-txt">
-        <b>${a.title}</b>
-        <span>${a.detail}</span>
-        ${a.tip?`<span class="alert-tip">${icon('info',{size:11})} ${a.tip}</span>`:''}
+  // ── avisos: solo los urgentes, en una barra fina desplegable ──
+  const warns=buildAlerts(data).filter(a=>a.tone==='frost'||a.tone==='storm');
+  const topTone=warns.some(a=>a.tone==='storm')?'storm':warns[0]?.tone||'';
+  const alertBarHTML=warns.length?`
+    <div class="alertbar-wrap" data-reveal>
+      <button class="alertbar alertbar-${topTone}" data-alertbar>
+        <span class="ab-ic">${icon(warns[0].iconName,{size:15})}</span>
+        <span class="ab-txt">${warns.length===1?warns[0].title:`${warns.length} avisos para hoy`}</span>
+        ${icon('chevron-down',{size:15,cls:'ab-chev'})}
+      </button>
+      <div class="alertbar-panel" hidden>
+        ${warns.map(a=>`<div class="ab-item ab-${a.tone}">
+          <span class="ab-item-ic">${icon(a.iconName,{size:16})}</span>
+          <div><b>${a.title}</b><span>${a.detail}</span>${a.tip?`<span class="ab-tip">${a.tip}</span>`:''}</div>
+        </div>`).join('')}
       </div>
-    </div>`).join('')}</div>`:'';
+    </div>`:'';
+
+  // ── el día en palabras ──
+  const dg=buildDigest(data);
+  const digestCard=dg.length?card(`<ul class="digest">${dg.map(it=>`
+    <li class="dg${it.tone?` dg-${it.tone}`:''}"><span class="dg-ic">${icon(it.iconName,{size:14})}</span><span>${it.text}</span></li>`).join('')}
+  </ul>`,{title:'El día en pocas palabras',cls:'card-digest'}):'';
 
   // ── hero: tarjeta translúcida sobre el cielo ──
   const hero=`
@@ -126,7 +140,7 @@ export function render(el){
     {title:'Próximas horas',cls:'card-strip'});
 
   el.innerHTML=`<div class="wrap wrap-ahora">
-    ${alertsHTML}${hero}${agro}${tiles}${arcCard}${strip}
+    ${hero}${alertBarHTML}${digestCard}${agro}${tiles}${arcCard}${strip}
   </div>`;
 }
 
@@ -140,6 +154,12 @@ export function mount(){
     state.jumpHourISO=b.dataset.hour;
     go('porhora');
   }));
+  const ab=view.querySelector('[data-alertbar]');
+  ab?.addEventListener('click',()=>{
+    const p=ab.parentElement.querySelector('.alertbar-panel');
+    const open=ab.parentElement.classList.toggle('open');
+    p.hidden=!open;
+  });
 }
 
 function uvWord(v){return v>=8?'muy alto':v>=6?'alto':v>=3?'moderado':'bajo';}

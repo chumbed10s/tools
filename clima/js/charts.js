@@ -126,6 +126,21 @@ export function chart(cfg){
     });
   });
 
+  // ── flechas de dirección de viento sobre la línea ──
+  let wdir='';
+  series.forEach(s=>{
+    if(!s.dirs)return;
+    const Y=s.axis==='right'?YR:YL;
+    const step=Math.max(1,Math.ceil(n/18));
+    for(let i=0;i<n;i+=step){
+      const v=s.values[i], deg=s.dirs[i];
+      if(v==null||deg==null)continue;
+      const to=(Math.round(deg)+180)%360;
+      wdir+=`<g class="ch-wdir" transform="translate(${X(i).toFixed(1)} ${Y(v).toFixed(1)}) rotate(${to})">`
+        +`<path d="M0 -4.6 L3.4 4.2 L0 2 L-3.4 4.2 Z" style="fill:${s.color}"/></g>`;
+    }
+  });
+
   // ── marcador ahora ──
   let now='';
   if(nowRel>=0&&nowRel<n){
@@ -146,7 +161,7 @@ export function chart(cfg){
       data-n="${n}" data-l="${PAD.l}" data-stepx="${stepX}">
       ${bands}${grid}${xl}${yl}${yr}
       <line class="ch-guide" x1="${guideX}" y1="${PAD.t}" x2="${guideX}" y2="${PAD.t+ih}" opacity="0"/>
-      ${body}${now}${dots}${hits}
+      ${body}${wdir}${now}${dots}${hits}
     </svg>
     <div class="chart-tip" hidden></div>
   </div>`;

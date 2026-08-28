@@ -1,6 +1,6 @@
 // Vista profunda de un día — compartida, se abre desde "Semana".
 import {state,activeData,agroOn} from '../state.js';
-import {nowHourIndex,wmoLabel,wmoCategory} from '../weather.js';
+import {nowHourIndex,todayDailyIndex,wmoLabel,wmoCategory} from '../weather.js';
 import {temp,wind,pct,rain,cardinal,fmtHour,fmtDayLong,hours as fmtHours,round} from '../format.js';
 import {deltaTSeries,inversionSeries,frostByDay} from '../agro/meteo.js';
 import {getProfiles,getProfile} from '../agro/profiles.js';
@@ -19,7 +19,7 @@ export function renderDayDetail(el,dayIdx){
   const count=Math.min(h.time.length,start+24)-start;
   const nowIdx=nowHourIndex(data);
   const nowRel=(nowIdx>=start&&nowIdx<start+count)?nowIdx-start:-1;
-  const isFuture=dayIdx>7;
+  const isFuture=(dayIdx-todayDailyIndex(data))>7;
 
   const cs=getComputedStyle(document.documentElement);
   const c1=cs.getPropertyValue('--accent').trim(),c2=cs.getPropertyValue('--muted').trim(),cRain=cs.getPropertyValue('--rain').trim();
@@ -49,7 +49,7 @@ export function renderDayDetail(el,dayIdx){
     <div class="mini-legend"><span><i style="background:${c1}"></i>Viento</span><span><i style="background:${c2}"></i>${term('gust','Ráfaga')}</span></div>
     <div class="chart-reading" data-r="w">Tocá o pasá el mouse por el gráfico</div>
     ${mkChart([
-      {key:'w',label:'Viento',values:slice(h.wind_speed_10m),kind:'area',color:c1,unit:''},
+      {key:'w',label:'Viento',values:slice(h.wind_speed_10m),dirs:slice(h.wind_direction_10m),kind:'area',color:c1,unit:''},
       {key:'g',label:'Ráfaga',values:slice(h.wind_gusts_10m),kind:'dash',color:c2,unit:''},
     ])}`,{title:'Viento',cls:'card-chart'});
 
