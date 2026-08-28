@@ -1,10 +1,9 @@
-// Íconos de clima: Meteocons (basmilius/weather-icons, MIT), animados, vía CDN.
-// Evita reinventar íconos de clima a mano — este set ya es preciso y lindo.
+// Íconos de clima: Meteocons (basmilius/weather-icons, MIT), estáticos,
+// copiados al repo en assets/weather/ — sin dependencia de red.
 import {wmoCategory} from './weather.js';
 
-const ICON_BASE='https://cdn.jsdelivr.net/gh/basmilius/weather-icons@dev/production/fill/svg/';
+const ICON_BASE='./assets/weather/';
 
-// code WMO → nombre de archivo Meteocons, separado por día/noche donde existe esa variante.
 const MAP={
   clear:{day:'clear-day',night:'clear-night'},
   mostly:{day:'clear-day',night:'clear-night'},
@@ -22,8 +21,7 @@ const MAP={
   storm:{day:'thunderstorms-day-rain',night:'thunderstorms-night-rain'},
 };
 
-// Reclasifica algunos códigos WMO más fino que wmoCategory (que agrupa para el
-// semáforo de viento) — acá nos interesa elegir el ícono correcto, no el color.
+// Reclasifica algunos códigos WMO más fino que wmoCategory para elegir ícono.
 function iconKey(code){
   if(code===65)return'extremeRain';
   if(code===66||code===67||code===56||code===57)return'freezing';
@@ -32,12 +30,11 @@ function iconKey(code){
 }
 
 export function iconName(code,isDay){
-  const key=iconKey(code);
-  const entry=MAP[key]||MAP.overcast;
+  const entry=MAP[iconKey(code)]||MAP.overcast;
   return isDay?entry.day:entry.night;
 }
 
-export function weatherIconSVG(code,{size=48,isDay=true,alt=''}={}){
+export function weatherIconSVG(code,{size=64,isDay=true,alt=''}={}){
   const name=iconName(code,isDay);
   return`<img class="wi" src="${ICON_BASE}${name}.svg" width="${size}" height="${size}" alt="${alt}" loading="lazy">`;
 }

@@ -1,28 +1,34 @@
-// Claro/oscuro: por defecto sigue al sistema; al tocar el toggle queda fijo y persiste.
-import {loadTheme,saveTheme} from './storage.js';
+// Tema: system / light / dark. Vive en state.settings.theme (persistido).
+import {state} from './state.js';
+import {saveSettings} from './storage.js';
+
+const darkMQ=window.matchMedia('(prefers-color-scheme: dark)');
 
 export function initTheme(){
-  applyTheme(loadTheme());
+  applyTheme(state.settings.theme||'system');
+  darkMQ.addEventListener('change',()=>{
+    if((state.settings.theme||'system')==='system')applyTheme('system');
+  });
 }
-function applyTheme(theme){
+
+export function applyTheme(theme){
   const root=document.documentElement;
   if(theme==='light'||theme==='dark')root.setAttribute('data-theme',theme);
   else root.removeAttribute('data-theme');
-  updateToggleIcon(theme);
-}
-function updateToggleIcon(theme){
-  const btn=document.getElementById('theme-toggle');
-  if(!btn)return;
-  const isDark=theme==='dark'||(theme==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);
-  btn.innerHTML=isDark
-    ?'<i class="fa-solid fa-moon"></i>'
-    :'<i class="fa-solid fa-sun"></i>';
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if(meta)meta.setAttribute('content',isDark()?'#13110e':'#e8e4db');
 }
 
-export function toggleTheme(){
-  const current=loadTheme();
-  const isDarkNow=current==='dark'||(current==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);
-  const next=isDarkNow?'light':'dark';
-  saveTheme(next);
-  applyTheme(next);
+export function setTheme(theme){
+  state.settings.theme=theme;
+  saveSettings(state.settings);
+  applyTheme(theme);
 }
+
+export function isDark(){
+  const t=state.settings.theme||'system';
+  return t==='dark'||(t==='system'&&darkMQ.matches);
+}
+
+// legado: alterna claro/oscuro explícito
+export function toggleTheme(){setTheme(isDark()?'light':'dark');}

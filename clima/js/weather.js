@@ -1,17 +1,32 @@
 // Descarga y parseo del pronóstico (Open-Meteo Forecast API) para una ubicación.
-const CURRENT=['temperature_2m','relative_humidity_2m','apparent_temperature','is_day','precipitation','weather_code','cloud_cover','pressure_msl','wind_speed_10m','wind_direction_10m','wind_gusts_10m'];
-const HOURLY=['temperature_2m','relative_humidity_2m','dew_point_2m','apparent_temperature','precipitation_probability','precipitation','weather_code','pressure_msl','cloud_cover','visibility','wind_speed_10m','wind_direction_10m','wind_gusts_10m','uv_index','is_day'];
-const DAILY=['weather_code','temperature_2m_max','temperature_2m_min','apparent_temperature_max','apparent_temperature_min','sunrise','sunset','daylight_duration','uv_index_max','precipitation_sum','precipitation_probability_max','precipitation_hours','wind_speed_10m_max','wind_gusts_10m_max','wind_direction_10m_dominant'];
+const CURRENT=['temperature_2m','relative_humidity_2m','apparent_temperature','is_day','precipitation',
+  'weather_code','cloud_cover','pressure_msl','wind_speed_10m','wind_direction_10m','wind_gusts_10m'];
+
+const HOURLY=['temperature_2m','relative_humidity_2m','dew_point_2m','apparent_temperature',
+  'precipitation_probability','precipitation','weather_code','pressure_msl','surface_pressure',
+  'cloud_cover','visibility','wind_speed_10m','wind_direction_10m','wind_gusts_10m',
+  'wind_speed_80m','wind_speed_120m','wind_speed_180m','wind_direction_80m',
+  'uv_index','is_day','soil_temperature_0cm','soil_temperature_6cm',
+  'soil_moisture_0_to_1cm','soil_moisture_1_to_3cm',
+  'et0_fao_evapotranspiration','shortwave_radiation','cape'];
+
+const DAILY=['weather_code','temperature_2m_max','temperature_2m_min','apparent_temperature_max',
+  'apparent_temperature_min','sunrise','sunset','daylight_duration','sunshine_duration','uv_index_max',
+  'precipitation_sum','snowfall_sum','precipitation_probability_max','precipitation_hours',
+  'wind_speed_10m_max','wind_gusts_10m_max','wind_direction_10m_dominant','et0_fao_evapotranspiration'];
 
 export async function fetchForecast(lat,lon){
   const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}`
     +`&current=${CURRENT.join(',')}`
     +`&hourly=${HOURLY.join(',')}`
     +`&daily=${DAILY.join(',')}`
-    +`&timezone=auto&forecast_days=15&wind_speed_unit=kmh`;
+    +`&timezone=auto&forecast_days=15&past_days=31&wind_speed_unit=kmh`;
   const res=await fetch(url);
   if(!res.ok)throw new Error('HTTP '+res.status);
-  return res.json();
+  const data=await res.json();
+  data._pastDays=31;
+  data._forecastDays=15;
+  return data;
 }
 
 // Índice de la hora "ahora" dentro de hourly.time — el forecast ya viene en hora
@@ -20,6 +35,19 @@ export function nowHourIndex(data){
   const nowLocal=data.current.time.slice(0,13); // "YYYY-MM-DDTHH", ya en tz local
   let idx=data.hourly.time.findIndex(t=>t.slice(0,13)>=nowLocal);
   return idx<0?0:idx;
+}
+
+// Índice del primer registro de "hoy" (00:00 local) — el past_days deja 31 días
+// de historia por delante, así que los índices "de pronóstico" arrancan acá.
+export function todayStartIndex(data){
+  const today=data.current.time.slice(0,10); // YYYY-MM-DD local
+  const i=data.hourly.time.findIndex(t=>t.slice(0,10)===today);
+  return i<0?0:i;
+}
+export function todayDailyIndex(data){
+  const today=data.current.time.slice(0,10);
+  const i=data.daily.time.findIndex(t=>t===today);
+  return i<0?0:i;
 }
 
 export function wmoCategory(c){
