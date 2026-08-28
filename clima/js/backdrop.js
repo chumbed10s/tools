@@ -59,6 +59,8 @@ export function setBackdrop({category='clear',isDay=1,hour=12,sunrise,sunset,pre
     frac=Math.max(0,Math.min(1,(hour-sr)/Math.max(1,(ss-sr))));
   }
   scene={cat:category,isDay:isDay?1:0,dayFrac:frac,precip:precipMm,cape,cloud:cloudCover};
+  // el contenido sobre el cielo (hero) usa esto para elegir tinta clara u oscura
+  document.documentElement.classList.toggle('sky-night', !scene.isDay);
   seedDrops();
   if(!running())drawFrame(performance.now());
 }
