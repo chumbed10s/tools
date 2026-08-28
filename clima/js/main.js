@@ -296,27 +296,48 @@ if('serviceWorker'in navigator){
 }
 
 // ── helpers ──────────────────────────────────────────────
+// Pull-to-refresh deliberado: sólo si el gesto arranca con la vista arriba de
+// todo, es claramente vertical, y se arrastra bastante. Con resistencia.
 function initPullToRefresh(scroller,onRefresh){
-  let startY=0,pulling=false,ind=null;
+  const TRIGGER=150;       // px de arrastre real para disparar
+  const DEADZONE=16;       // px antes de "armar" el gesto
+  let sx=0,sy=0,armed=false,aborted=true,ind=null,busy=false;
+
   scroller.addEventListener('touchstart',e=>{
-    if(scroller.scrollTop<=0){startY=e.touches[0].clientY;pulling=true;}
+    if(busy||e.touches.length>1){aborted=true;return;}
+    sx=e.touches[0].clientX; sy=e.touches[0].clientY;
+    aborted=scroller.scrollTop>0;   // sólo cuenta si ya estás arriba de todo
+    armed=false;
   },{passive:true});
+
   scroller.addEventListener('touchmove',e=>{
-    if(!pulling)return;
-    const dy=e.touches[0].clientY-startY;
-    if(dy>0&&scroller.scrollTop<=0){
-      if(!ind){ind=document.createElement('div');ind.className='ptr';ind.innerHTML=icon('refresh',{size:18});document.getElementById('app').appendChild(ind);}
-      ind.style.transform=`translateX(-50%) translateY(${Math.min(dy*0.4,64)}px) rotate(${dy}deg)`;
-      ind.style.opacity=Math.min(1,dy/80);
+    if(aborted||busy)return;
+    const dx=e.touches[0].clientX-sx, dy=e.touches[0].clientY-sy;
+    if(!armed){
+      if(scroller.scrollTop>0 || dy<DEADZONE){ if(Math.abs(dx)>Math.abs(dy)) aborted=true; return; }
+      if(Math.abs(dx)>Math.abs(dy)*0.8){aborted=true;return;}   // intención horizontal
+      armed=true;
+      ind=document.createElement('div');ind.className='ptr';
+      ind.innerHTML=icon('refresh',{size:18});
+      document.getElementById('app').appendChild(ind);
     }
+    const pull=Math.max(0,dy-DEADZONE);
+    const shown=Math.min(72, Math.pow(pull,0.82)*0.9);  // resistencia
+    ind.style.transform=`translateX(-50%) translateY(${shown}px) rotate(${pull*1.4}deg)`;
+    ind.style.opacity=Math.min(1,pull/TRIGGER);
+    ind.classList.toggle('ready',pull>=TRIGGER);
   },{passive:true});
+
   scroller.addEventListener('touchend',e=>{
-    if(!pulling){return;}
-    pulling=false;
-    const dy=e.changedTouches[0].clientY-startY;
-    if(ind){
-      if(dy>80){ind.classList.add('spin');onRefresh().finally(()=>{ind?.remove();ind=null;});}
-      else{ind.remove();ind=null;}
-    }
+    if(!armed||aborted){cleanup();return;}
+    const dy=e.changedTouches[0].clientY-sy;
+    if(dy-DEADZONE>=TRIGGER){
+      busy=true;
+      ind.classList.add('spin');
+      Promise.resolve(onRefresh()).finally(()=>{busy=false;cleanup();});
+    }else cleanup();
+    armed=false;
   });
+
+  function cleanup(){ind?.remove();ind=null;armed=false;}
 }

@@ -156,7 +156,6 @@ export function mount(){
         reading.textContent=`${fmtHour(iso)} · `+
           series.map((s,k)=>vals[k]==null?'':`${s.label} ${Math.round(vals[k]*10)/10}${s.unit||''}`).filter(Boolean).join(' · ');
       }});
-      wrap.querySelectorAll('.ch-hit').forEach(s=>s.addEventListener('click',()=>openHour(view,ds+ +s.dataset.i,true)));
     }
     block.querySelectorAll('.hr-head').forEach(btn=>btn.addEventListener('click',()=>{
       const hr=btn.closest('.hr'), body=hr.querySelector('.hr-body');

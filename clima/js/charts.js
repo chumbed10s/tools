@@ -184,11 +184,27 @@ export function wireChart(wrap,{hours,series,startIdx=0,onMove}={}){
     if(guide)guide.style.opacity='0';
     if(tip)tip.hidden=true;
   }
-  svg.querySelectorAll('.ch-hit').forEach(s=>{
-    s.addEventListener('pointerenter',e=>activate(+s.dataset.i,e.clientX));
-    s.addEventListener('pointerdown',e=>activate(+s.dataset.i,e.clientX));
+  // índice más cercano a una coordenada X de pantalla
+  function idxAt(clientX){
+    const wr=svg.getBoundingClientRect();
+    const vw=+svg.viewBox.baseVal.width;
+    const xv=(clientX-wr.left)/wr.width*vw;
+    return Math.max(0,Math.min(n-1,Math.round((xv-l)/stepX)));
+  }
+  let dragging=false;
+  svg.addEventListener('pointerdown',e=>{
+    dragging=true;
+    try{svg.setPointerCapture(e.pointerId);}catch(_){}
+    activate(idxAt(e.clientX),e.clientX);
   });
-  svg.addEventListener('pointerleave',clear);
+  svg.addEventListener('pointermove',e=>{
+    if(e.pointerType==='mouse'&&!dragging){activate(idxAt(e.clientX),e.clientX);return;}
+    if(dragging)activate(idxAt(e.clientX),e.clientX);
+  });
+  const stop=e=>{dragging=false;try{svg.releasePointerCapture(e.pointerId);}catch(_){}};
+  svg.addEventListener('pointerup',stop);
+  svg.addEventListener('pointercancel',stop);
+  svg.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'){dragging=false;clear();}});
   return {activate,clear};
 }
 
