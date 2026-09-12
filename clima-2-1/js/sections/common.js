@@ -77,6 +77,40 @@ export function dataGroup(title,rows){
   </details>`;
 }
 
+// Envuelve un conjunto de dataGroup con un botón "Desplegar/Colapsar todo".
+export function dataGroupsWrap(bodyHTML){
+  return `<div class="hsheet-wrap">
+    <button class="hsheet-toggle-all" data-toggle-all>${icon('layer-group',{size:11})} Desplegar todo</button>
+    ${bodyHTML}
+  </div>`;
+}
+
+// Wiring de los <details> de datos: (a) el botón "Desplegar/Colapsar todo",
+// (b) cuando un grupo cambia de alto, re-mide el contenedor ancestro con
+// altura fija en px (hero-detail / hr2-detail) para que no corte el
+// contenido nuevo.
+export function wireDataGroups(container){
+  container.querySelectorAll('.hsheet-wrap').forEach(wrap=>{
+    if(wrap._wired)return;
+    wrap._wired=true;
+    const btn=wrap.querySelector('[data-toggle-all]');
+    const groups=[...wrap.querySelectorAll('.hsheet-group')];
+    const resizeAncestor=()=>{
+      const fixed=wrap.closest('.hero-detail, .hr2-detail');
+      if(fixed&&fixed.style.height&&fixed.style.height!=='0px'){
+        fixed.style.height=fixed.firstElementChild.scrollHeight+'px';
+      }
+    };
+    groups.forEach(g=>g.addEventListener('toggle',resizeAncestor));
+    btn?.addEventListener('click',()=>{
+      const allOpen=groups.every(g=>g.open);
+      groups.forEach(g=>{g.open=!allOpen;});
+      btn.innerHTML=`${icon('layer-group',{size:11})} ${allOpen?'Desplegar todo':'Colapsar todo'}`;
+      resizeAncestor();
+    });
+  });
+}
+
 // Barra de progreso del día: noche (violeta) → día (amarillo, entre amanecer y
 // atardecer) → noche, con un marcador de sol/luna en la hora actual.
 export function dayProgressBar(sunriseISO,sunsetISO,nowISO){
@@ -210,7 +244,7 @@ export function dataSheet(h,i,{dTSeries,invSeries,frost}={}){
   const sunMin=h.sunshine_duration?.[i]!=null?Math.round(h.sunshine_duration[i]/60):null;
   const timeLabel=fmtRowTime(h.time[i]);
   const dr=o=>dataRow({...o,time:timeLabel});
-  return `${dataGroup('Aire',[
+  return dataGroupsWrap(`${dataGroup('Aire',[
       dr({iconName:'droplet',color:'#3b82f6',label:'Humedad',value:pct(humPct),chip:humB.label,chipTone:humB.tone,term:'humedad'}),
       dr({iconName:'droplet',color:'#6366f1',label:'Punto de rocío',value:temp(h.dew_point_2m[i]),chip:dewB.label,chipTone:dewB.tone,term:'puntoRocio'}),
       dr({iconName:'temperature-half',color:'#f59e0b',label:'Delta-T',value:dT.toFixed(1),chip:dTBadge.label,chipTone:dTBadge.tone,term:'deltaT'}),
@@ -258,7 +292,7 @@ export function dataSheet(h,i,{dTSeries,invSeries,frost}={}){
       soilMP2!=null?dr({iconName:'droplet',color:'#14b8a6',label:'Humedad suelo (3–9 cm)',value:`${soilMP2}%`,chip:soilMoistBadge(soilMP2).label,chipTone:soilMoistBadge(soilMP2).tone,term:'sueloHumedad'}):'',
       soilMP3!=null?dr({iconName:'droplet',color:'#14b8a6',label:'Humedad suelo (9–27 cm)',value:`${soilMP3}%`,chip:soilMoistBadge(soilMP3).label,chipTone:soilMoistBadge(soilMP3).tone,term:'sueloHumedad'}):'',
       soilMP4!=null?dr({iconName:'droplet',color:'#14b8a6',label:'Humedad suelo (27–81 cm)',value:`${soilMP4}%`,chip:soilMoistBadge(soilMP4).label,chipTone:soilMoistBadge(soilMP4).tone,term:'sueloHumedad'}):'',
-    ].filter(Boolean))}`;
+    ].filter(Boolean))}`);
 }
 
 function fmtRowTime(iso){
@@ -369,7 +403,7 @@ export function dataSheetDay(h,ds,de,{dTSeries,invSeries,frost}={}){
 
   const T='Hoy en promedio';
   const dr=o=>dataRow({...o,time:T});
-  return `${dataGroup('Aire',[
+  return dataGroupsWrap(`${dataGroup('Aire',[
       dr({iconName:'droplet',color:'#3b82f6',label:'Humedad',value:pct(humPct),chip:humB.label,chipTone:humB.tone,term:'humedad'}),
       dr({iconName:'droplet',color:'#6366f1',label:'Punto de rocío',value:temp(dew),chip:dewB.label,chipTone:dewB.tone,term:'puntoRocio'}),
       dr({iconName:'temperature-half',color:'#f59e0b',label:'Delta-T',value:dT.toFixed(1),chip:dTBadge.label,chipTone:dTBadge.tone,term:'deltaT'}),
@@ -417,7 +451,7 @@ export function dataSheetDay(h,ds,de,{dTSeries,invSeries,frost}={}){
       soilMP2!=null?dr({iconName:'droplet',color:'#14b8a6',label:'Humedad suelo (3–9 cm)',value:`${soilMP2}%`,chip:soilMoistBadge(soilMP2).label,chipTone:soilMoistBadge(soilMP2).tone,term:'sueloHumedad'}):'',
       soilMP3!=null?dr({iconName:'droplet',color:'#14b8a6',label:'Humedad suelo (9–27 cm)',value:`${soilMP3}%`,chip:soilMoistBadge(soilMP3).label,chipTone:soilMoistBadge(soilMP3).tone,term:'sueloHumedad'}):'',
       soilMP4!=null?dr({iconName:'droplet',color:'#14b8a6',label:'Humedad suelo (27–81 cm)',value:`${soilMP4}%`,chip:soilMoistBadge(soilMP4).label,chipTone:soilMoistBadge(soilMP4).tone,term:'sueloHumedad'}):'',
-    ].filter(Boolean))}`;
+    ].filter(Boolean))}`);
 }
 
 export function hourRow(h,i,{isNow=false,label=null,dTSeries,invSeries,frost}={}){

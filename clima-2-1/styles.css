@@ -40,11 +40,11 @@ body{
 }
 
 /* ── scrollbars propias, no las del sistema ── */
-*{scrollbar-width:thin; scrollbar-color:var(--muted-2) transparent;}
-*::-webkit-scrollbar{width:9px; height:9px;}
+*{scrollbar-width:auto; scrollbar-color:color-mix(in srgb, var(--accent) 55%, var(--muted)) transparent;}
+*::-webkit-scrollbar{width:11px; height:11px;}
 *::-webkit-scrollbar-track{background:transparent;}
-*::-webkit-scrollbar-thumb{background:var(--muted-2); border-radius:8px; border:2px solid transparent; background-clip:padding-box;}
-*::-webkit-scrollbar-thumb:hover{background:var(--muted);}
+*::-webkit-scrollbar-thumb{background:color-mix(in srgb, var(--accent) 55%, var(--muted)); border-radius:8px; border:2px solid transparent; background-clip:padding-box;}
+*::-webkit-scrollbar-thumb:hover{background:var(--accent);}
 
 #app{display:flex; flex-direction:column; height:100vh; max-width:640px; margin:0 auto; position:relative;}
 
@@ -321,6 +321,11 @@ body{
 .hsheet-group-chev{color:var(--muted-2); transition:transform .2s ease; flex-shrink:0;}
 .hsheet-group[open] .hsheet-group-chev{transform:rotate(180deg);}
 .hsheet-group-title:active .hsheet-group-chev{opacity:.6;}
+.hsheet-wrap{display:flex; flex-direction:column;}
+.hsheet-toggle-all{
+  align-self:flex-end; display:flex; align-items:center; gap:5px; margin-bottom:6px;
+  background:none; border:none; color:var(--accent); font-size:11px; font-weight:600; cursor:pointer; padding:2px 0;
+}
 .hsheet{display:grid; grid-template-columns:1fr; column-gap:14px; border-top:1px solid var(--border);}
 .hsheet-row{display:flex; align-items:center; gap:7px; padding:9px 0; border-bottom:1px solid var(--border); font-size:12px; min-width:0; cursor:pointer;}
 .hsheet-ic{width:14px; text-align:center; flex-shrink:0;}

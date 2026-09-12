@@ -6,7 +6,7 @@ import {temp,tempC,wind,pct,cardinal,round,windUnitLabel,rain,fmtHour} from '../
 import {deltaTSeries,inversionSeries,frostByDay,accumulations} from '../agro/meteo.js';
 import {countUpAll} from '../anim.js';
 import {go} from '../router.js';
-import {card,icon,weatherIconSVG,windDial,iconBadge,emptyState,dataGroup,dataRow,dataSheet,dataSheetDay,dayProgressBar,dayStats,hourRow,wireHourRows} from './common.js';
+import {card,icon,weatherIconSVG,windDial,iconBadge,emptyState,dataGroup,dataRow,dataSheet,dataSheetDay,dayProgressBar,dayStats,hourRow,wireHourRows,wireDataGroups} from './common.js';
 import {buildDaySummary,openDaySummary} from '../daysummary.js';
 
 export const label='Hoy';
@@ -103,6 +103,7 @@ export function mount(){
   countUpAll(view);
   view.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
   wireHourRows(view);
+  wireDataGroups(view);
 
   const heroToggle=view.querySelector('[data-hero-toggle]');
   const hero=view.querySelector('.hero');

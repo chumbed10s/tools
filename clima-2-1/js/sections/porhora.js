@@ -10,7 +10,7 @@ import {temp,fmtDayLong} from '../format.js';
 import {deltaTSeries,inversionSeries,frostByDay} from '../agro/meteo.js';
 import {mountChart} from '../charts.js';
 import {countUpAll} from '../anim.js';
-import {icon,weatherIconSVG,wmoLabel,hourRow,wireHourRows,emptyState} from './common.js';
+import {icon,weatherIconSVG,wmoLabel,hourRow,wireHourRows,wireDataGroups,emptyState} from './common.js';
 import {wind as fmtWind,rain,cardinal} from '../format.js';
 
 export const label='Por hora';
@@ -207,6 +207,7 @@ export function mount(){
   const {h,nowIdx,initialDay=0}=ctx;
   const M=metrics();
   wireHourRows(view);
+  wireDataGroups(view);
   countUpAll(view);
 
   const tabsBar=view.querySelector('.pday-tabs');
