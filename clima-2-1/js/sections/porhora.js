@@ -1,7 +1,9 @@
 // Sección "Por hora": pronóstico horario completo, un día a la vez — tabs de
-// día arriba (sincronizados con swipe horizontal), y por día un selector de
-// métrica para un gráfico liviano de una sola serie + el detalle hora a hora
-// completo (mismas filas y tarjetas desplegables que en "Ahora").
+// día arriba (solo se cambia de día tocando un tab, sin swipe: mirar los
+// gráficos con el dedo se hacía incómodo si el gesto también pasaba de día),
+// y por día un selector de métrica para un gráfico liviano de una sola serie
+// + el detalle hora a hora completo (mismas filas y tarjetas desplegables
+// que en "Ahora").
 import {activeData,state} from '../state.js';
 import {nowHourIndex,todayStartIndex} from '../weather.js';
 import {temp,fmtDayLong} from '../format.js';
@@ -281,28 +283,17 @@ export function mount(){
     resizeObs.observe(page);
   }
 
-  function selectDay(idx,{scroll=true}={}){
+  function selectDay(idx){
     tabBtns.forEach((b,i)=>b.classList.toggle('active',i===idx));
+    pages.forEach((p,i)=>p.classList.toggle('active',i===idx));
     const page=pages[idx];
     if(!page)return;
-    if(scroll){
-      pager.scrollTo({left:page.offsetLeft,behavior:'smooth'});
-      tabBtns[idx]?.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
-    }
+    tabBtns[idx]?.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
     if(!page._mounted){page._mounted=true;mountPageChart(page);}
     watchPageHeight(page);
   }
 
   tabBtns.forEach((b,i)=>b.addEventListener('click',()=>selectDay(i)));
-
-  let scrollTimer=null;
-  pager.addEventListener('scroll',()=>{
-    clearTimeout(scrollTimer);
-    scrollTimer=setTimeout(()=>{
-      const idx=Math.round(pager.scrollLeft/pager.clientWidth);
-      selectDay(idx,{scroll:false});
-    },80);
-  });
 
   pages.forEach(page=>{
     page.querySelectorAll('.pmetric-tab[data-metric]').forEach(btn=>btn.addEventListener('click',()=>{
@@ -317,5 +308,5 @@ export function mount(){
     }));
   });
 
-  selectDay(initialDay,{scroll:initialDay>0});
+  selectDay(initialDay);
 }

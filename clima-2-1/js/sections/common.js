@@ -71,10 +71,10 @@ export function dataRow({iconName,color='#9d9da8',label,value,chip='',chipTone='
 }
 
 export function dataGroup(title,rows){
-  return `<div class="hsheet-group">
-    <div class="hsheet-group-title">${title}</div>
+  return `<details class="hsheet-group">
+    <summary class="hsheet-group-title">${title}${icon('chevron-down',{size:11,cls:'hsheet-group-chev'})}</summary>
     <div class="hsheet">${rows.join('')}</div>
-  </div>`;
+  </details>`;
 }
 
 // Barra de progreso del día: noche (violeta) → día (amarillo, entre amanecer y
@@ -429,6 +429,7 @@ export function hourRow(h,i,{isNow=false,label=null,dTSeries,invSeries,frost}={}
       <span class="hr2-ic-wrap">
         ${weatherIconSVG(h.weather_code[i],{size:32,isDay:!!h.is_day[i]})}
         ${h.precipitation_probability[i]>0?`<span class="hr2-rain-badge${rainHi?' hi':''}">${icon('droplet',{size:7})}${pct(h.precipitation_probability[i])}</span>`:''}
+        <span class="hr2-ic-cond">${wmoLabel(h.weather_code[i])}</span>
       </span>
       <span class="hr2-temp" data-count="${tempC(h.temperature_2m[i])}" data-suffix="°">0°</span>
       <span class="hr2-mid-txt">
@@ -463,10 +464,18 @@ export function hourRow(h,i,{isNow=false,label=null,dTSeries,invSeries,frost}={}
 }
 
 export function wireHourRows(container){
+  const rows=[...container.querySelectorAll('.hr2-row')];
   container.querySelectorAll('.hr2-main').forEach(btn=>btn.addEventListener('click',()=>{
     const row=btn.closest('.hr2-row'), detail=row.querySelector('.hr2-detail');
-    const open=row.classList.toggle('open');
-    detail.style.height=open?detail.firstElementChild.scrollHeight+'px':'0px';
+    const willOpen=!row.classList.contains('open');
+    rows.forEach(r=>{
+      if(r===row)return;
+      const d=r.querySelector('.hr2-detail');
+      r.classList.remove('open');
+      if(d)d.style.height='0px';
+    });
+    row.classList.toggle('open',willOpen);
+    detail.style.height=willOpen?detail.firstElementChild.scrollHeight+'px':'0px';
   }));
   container.querySelectorAll('.hsheet-row[data-term]').forEach(row=>{
     if(row._wired)return;

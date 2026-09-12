@@ -80,11 +80,12 @@ body{
 .icon-btn:active{transform:scale(.94);}
 #refresh-btn.spinning i{animation:spin .8s linear infinite;}
 
-/* En el celular, ubicación y acciones se apilan en vez de compartir la fila
-   — así el nombre de la ubicación tiene todo el ancho y no tiene que wrappear. */
+/* En el celular, los botones de acción se paran uno arriba del otro en vez
+   de ir lado a lado — ocupan el ancho de uno solo, así se le deja más
+   espacio al nombre de la ubicación y baja el riesgo de que wrappee. */
 @media (max-width:879px){
-  .hdr{flex-direction:column; align-items:stretch; gap:6px;}
-  .hdr-actions{align-self:flex-end;}
+  .hdr-actions{flex-direction:column; align-items:flex-end; gap:8px;}
+  .hdr-updated-badge{bottom:-6px;}
 }
 @keyframes spin{to{transform:rotate(360deg);}}
 
@@ -282,22 +283,25 @@ body{
    ancho, se deja el pill completo de siempre. */
 .hr2-ic-wrap{position:relative; display:inline-flex; flex-shrink:0;}
 .hr2-rain-badge{
-  display:none; align-items:center; gap:2px; position:absolute; right:-5px; bottom:-4px;
+  display:none; align-items:center; gap:2px; position:absolute; right:-5px; top:-3px;
   background:#1d2b45; color:#8ea9e8; font-size:8.5px; font-weight:700; line-height:1;
   padding:2px 4px; border-radius:8px; border:1.5px solid var(--surface); white-space:nowrap;
 }
 .hr2-rain-badge.hi{background:#1e3a8a; color:#93c5fd;}
+.hr2-ic-cond{display:none;}
 @media (max-width:879px){
   .hr2-rain-badge{display:flex;}
   .hr2-right .rpill{display:none;}
 
-  /* La condición y sensación térmica no entran en la misma línea que el
-     resto en el celular — pasan a una segunda línea en vez de perderse. */
-  .hr2-main{flex-wrap:wrap; row-gap:4px;}
-  .hr2-mid-txt{flex:1 1 100%; order:5; flex-direction:row; align-items:baseline; gap:6px; min-width:0;}
-  .hr2-cond{flex-shrink:0;}
-  .hr2-feel{overflow:visible;}
-  .hr2-feel::before{content:'· '; color:var(--muted-2);}
+  /* La condición ("Nublado") va debajo del ícono de la nube, no en una fila
+     aparte a la izquierda — la sensación térmica se saca del todo acá,
+     sobra en un espacio tan chico. */
+  .hr2-mid-txt{display:none;}
+  .hr2-ic-wrap{flex-direction:column; align-items:center; gap:1px;}
+  .hr2-ic-cond{
+    display:block; font-size:9px; color:var(--muted); text-align:center; line-height:1.15;
+    max-width:52px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
 }
 .hr2-chev{color:var(--muted-2); flex-shrink:0; transition:transform .2s;}
 .hr2-row.open .hr2-chev{transform:rotate(180deg);}
@@ -307,7 +311,16 @@ body{
 /* ── hoja de datos (detalle de hora, liviano) ── */
 .hsheet-group{margin-top:12px;}
 .hsheet-group:first-child{margin-top:0;}
-.hsheet-group-title{font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted-2); padding:0 0 4px;}
+.hsheet-group-title{
+  display:flex; align-items:center; justify-content:space-between; gap:6px;
+  font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted-2);
+  padding:2px 0 6px; cursor:pointer; list-style:none; user-select:none;
+}
+.hsheet-group-title::-webkit-details-marker{display:none;}
+.hsheet-group-title::marker{display:none; content:'';}
+.hsheet-group-chev{color:var(--muted-2); transition:transform .2s ease; flex-shrink:0;}
+.hsheet-group[open] .hsheet-group-chev{transform:rotate(180deg);}
+.hsheet-group-title:active .hsheet-group-chev{opacity:.6;}
 .hsheet{display:grid; grid-template-columns:1fr; column-gap:14px; border-top:1px solid var(--border);}
 .hsheet-row{display:flex; align-items:center; gap:7px; padding:9px 0; border-bottom:1px solid var(--border); font-size:12px; min-width:0; cursor:pointer;}
 .hsheet-ic{width:14px; text-align:center; flex-shrink:0;}
@@ -354,9 +367,10 @@ body{
 .pday-tab.active{border-color:var(--accent); background:color-mix(in srgb, var(--accent) 10%, var(--surface));}
 .pday-tab.active .pday-tab-day{color:var(--accent);}
 
-.pday-pager{display:flex; align-items:flex-start; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; scrollbar-width:none; transition:height .15s ease;}
-.pday-pager::-webkit-scrollbar{display:none;}
-.pday-page{flex:0 0 100%; scroll-snap-align:start; min-width:0;}
+.pday-pager{display:block; overflow:hidden; transition:height .15s ease;}
+.pday-page{display:none; width:100%; min-width:0;}
+.pday-page.active{display:block; animation:pday-fade .18s ease both;}
+@keyframes pday-fade{from{opacity:0;}to{opacity:1;}}
 
 .pday-page-head{display:flex; align-items:center; gap:10px; padding:2px 2px 2px;}
 .pday-page-name{font-weight:700; font-size:15px; flex:1;}
@@ -462,6 +476,13 @@ body{
 .overlay-modal #overlay-content{width:100%;}
 .modal-card{background:var(--surface); border-radius:20px 20px 0 0; padding:16px; max-height:82vh; overflow-y:auto; margin:0 auto; max-width:640px;}
 .page-card{border-radius:0; max-height:none; min-height:100vh; padding:calc(env(safe-area-inset-top) + 16px) 16px 40px;}
+
+.overlay:not([hidden]){animation:overlay-fade .2s ease both;}
+.overlay-modal:not([hidden]) .modal-card{animation:sheet-up .28s cubic-bezier(.22,.85,.32,1) both;}
+.overlay-page:not([hidden]) .page-card{animation:page-in .22s ease both;}
+@keyframes overlay-fade{from{opacity:0;}to{opacity:1;}}
+@keyframes sheet-up{from{transform:translateY(28px); opacity:0;}to{transform:translateY(0); opacity:1;}}
+@keyframes page-in{from{opacity:0; transform:translateY(10px);}to{opacity:1; transform:translateY(0);}}
 .modal-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;}
 .modal-title{font-size:17px; font-weight:700;}
 .modal-close{width:32px; height:32px; border-radius:50%; border:none; background:var(--surface-2); color:var(--ink); cursor:pointer;}
@@ -513,6 +534,8 @@ body{
   max-height:80vh; overflow-y:auto; margin:0 auto; max-width:640px; width:100%;
 }
 .glossary-close{position:absolute; top:14px; right:14px; width:30px; height:30px; border-radius:50%; border:none; background:var(--surface-2); color:var(--ink); cursor:pointer;}
+.glossary-modal:not([hidden]) .glossary-backdrop{animation:overlay-fade .2s ease both;}
+.glossary-modal:not([hidden]) .glossary-sheet{animation:sheet-up .28s cubic-bezier(.22,.85,.32,1) both;}
 .glossary-title{font-size:17px; font-weight:700; margin:0 30px 14px 0;}
 
 .glossary-card{
