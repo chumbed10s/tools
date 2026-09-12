@@ -100,10 +100,12 @@ function renderHeader(){
 function updateLastUpdatedText(){
   const el=document.getElementById('last-updated');
   if(el){
-    if(!state.lastUpdated)el.textContent='';
+    if(!state.lastUpdated){el.hidden=true;}
     else{
       const mins=Math.max(0,Math.round((Date.now()-state.lastUpdated)/60000));
-      el.textContent=mins<1?'Actualizado recién':mins===1?'Actualizado hace 1 min':`Actualizado hace ${mins} min`;
+      el.textContent=mins<1?'recién':`${mins}m`;
+      el.title=mins<1?'Actualizado recién':mins===1?'Actualizado hace 1 min':`Actualizado hace ${mins} min`;
+      el.hidden=false;
     }
   }
   const gt=document.getElementById('gps-live-time');

@@ -426,7 +426,10 @@ export function hourRow(h,i,{isNow=false,label=null,dTSeries,invSeries,frost}={}
   return `<div class="hr2-row${isNow?' now':''}">
     <button class="hr2-main" data-toggle data-hr="${i}">
       <span class="hr2-hour">${label!=null?label:(isNow?'Ahora':fmtHourShort(h.time[i]))}</span>
-      ${weatherIconSVG(h.weather_code[i],{size:32,isDay:!!h.is_day[i]})}
+      <span class="hr2-ic-wrap">
+        ${weatherIconSVG(h.weather_code[i],{size:32,isDay:!!h.is_day[i]})}
+        ${h.precipitation_probability[i]>0?`<span class="hr2-rain-badge${rainHi?' hi':''}">${icon('droplet',{size:7})}${pct(h.precipitation_probability[i])}</span>`:''}
+      </span>
       <span class="hr2-temp" data-count="${tempC(h.temperature_2m[i])}" data-suffix="°">0°</span>
       <span class="hr2-mid-txt">
         <span class="hr2-cond">${wmoLabel(h.weather_code[i])}</span>

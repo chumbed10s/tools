@@ -66,13 +66,26 @@ body{
   100%{box-shadow:0 0 0 0 rgba(34,197,94,0);}
 }
 .hdr-actions{display:flex; align-items:center; gap:6px; flex-shrink:0; padding-top:2px;}
-.last-updated{font-size:11px; color:var(--muted); margin-right:2px; white-space:nowrap;}
+.icon-btn-wrap{position:relative; display:inline-flex;}
+.hdr-updated-badge{
+  position:absolute; left:50%; bottom:-8px; transform:translateX(-50%); white-space:nowrap;
+  font-size:9px; font-weight:700; color:var(--muted); background:var(--surface); border:1px solid var(--border);
+  border-radius:8px; padding:1.5px 5px; line-height:1.2;
+}
+.hdr-updated-badge[hidden]{display:none;}
 .icon-btn{
   width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:var(--surface);
   color:var(--ink); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px;
 }
 .icon-btn:active{transform:scale(.94);}
 #refresh-btn.spinning i{animation:spin .8s linear infinite;}
+
+/* En el celular, ubicación y acciones se apilan en vez de compartir la fila
+   — así el nombre de la ubicación tiene todo el ancho y no tiene que wrappear. */
+@media (max-width:879px){
+  .hdr{flex-direction:column; align-items:stretch; gap:6px;}
+  .hdr-actions{align-self:flex-end;}
+}
 @keyframes spin{to{transform:rotate(360deg);}}
 
 /* ── progress bar fina (refresh con datos ya en pantalla) ── */
@@ -262,6 +275,30 @@ body{
 .rpill-mm{font-size:9.5px; color:var(--muted); line-height:1;}
 .hr2-rain-hi{color:var(--accent);}
 .hr2-rain-hi b{color:var(--accent);}
+
+/* En el celular la franja "lo que queda del día" no tiene lugar para el pill
+   completo de lluvia al lado del de viento sin desbordar — se muestra en su
+   lugar como una placa chica sobre el ícono del clima. En pc, con más
+   ancho, se deja el pill completo de siempre. */
+.hr2-ic-wrap{position:relative; display:inline-flex; flex-shrink:0;}
+.hr2-rain-badge{
+  display:none; align-items:center; gap:2px; position:absolute; right:-5px; bottom:-4px;
+  background:#1d2b45; color:#8ea9e8; font-size:8.5px; font-weight:700; line-height:1;
+  padding:2px 4px; border-radius:8px; border:1.5px solid var(--surface); white-space:nowrap;
+}
+.hr2-rain-badge.hi{background:#1e3a8a; color:#93c5fd;}
+@media (max-width:879px){
+  .hr2-rain-badge{display:flex;}
+  .hr2-right .rpill{display:none;}
+
+  /* La condición y sensación térmica no entran en la misma línea que el
+     resto en el celular — pasan a una segunda línea en vez de perderse. */
+  .hr2-main{flex-wrap:wrap; row-gap:4px;}
+  .hr2-mid-txt{flex:1 1 100%; order:5; flex-direction:row; align-items:baseline; gap:6px; min-width:0;}
+  .hr2-cond{flex-shrink:0;}
+  .hr2-feel{overflow:visible;}
+  .hr2-feel::before{content:'· '; color:var(--muted-2);}
+}
 .hr2-chev{color:var(--muted-2); flex-shrink:0; transition:transform .2s;}
 .hr2-row.open .hr2-chev{transform:rotate(180deg);}
 .hr2-detail{height:0; overflow:hidden; transition:height .22s ease;}
