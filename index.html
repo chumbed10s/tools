@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Campo Tools · chumbed10s</title>
+<title>Chumbetools · chumbed10s</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -21,6 +21,7 @@
   --c1:      #00c9a7; /* teal  — SHP converter */
   --c2:      #69db7c; /* verde — densidad siembra */
   --c3:      #c99bf0; /* lila  — graficadora */
+  --c4:      #4dabf7; /* azul  — clima */
 }
 
 html, body {
@@ -205,6 +206,28 @@ body {
   flex-wrap: wrap;
   gap: 5px;
 }
+
+.card-love {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #e8619b;
+  background: color-mix(in srgb, #f783ac 14%, transparent);
+  border: 1px dashed #f783ac;
+  border-radius: 10px;
+  padding: 7px 8px;
+}
+.card-love .heart {
+  display: inline-block;
+  animation: heartbeat 1.3s ease-in-out infinite;
+}
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.3); }
+}
 .tag {
   font-size: 10px;
   font-weight: 600;
@@ -284,7 +307,7 @@ body {
   <!-- ── Header ──────────────────────────────────── -->
   <header class="header">
     <div class="header-eyebrow">chumbed10s</div>
-    <h1 class="header-title">Campo<em>Tools</em></h1>
+    <h1 class="header-title">Chumbe<em>tools</em></h1>
     <p class="header-sub">
       Herramientas geoespaciales · 100% client-side ·
       <a href="https://github.com/chumbed10s" target="_blank" rel="noopener">GitHub ↗</a>
@@ -463,6 +486,9 @@ body {
           <circle cx="188" cy="30" r="4" fill="#0d1525" stroke="#c99bf0" stroke-width="2"/>
           <path d="M62 45 L82 45 L72 62 Z" fill="#f783ac" fill-opacity=".8"/>
           <rect x="10" y="52" width="240" height="3" fill="#c99bf0" fill-opacity=".35"/>
+          <!-- corazones -->
+          <path d="M28,16 c-2,-4 -8,-3 -8,2 c0,4 8,10 8,10 c0,0 8,-6 8,-10 c0,-5 -6,-6 -8,-2 Z" fill="#f783ac" fill-opacity=".9"/>
+          <path d="M234,78 c-1.5,-3 -6,-2.2 -6,1.5 c0,3 6,7.5 6,7.5 c0,0 6,-4.5 6,-7.5 c0,-3.7 -4.5,-4.5 -6,-1.5 Z" fill="#f783ac" fill-opacity=".7"/>
         </svg>
       </div>
       <div class="card-body">
@@ -479,6 +505,67 @@ body {
           <span class="tag">Análisis</span>
           <span class="tag">Calculadora</span>
         </div>
+        <div class="card-love"><span class="heart">🩷</span> Hecha con amor, junto y para mi amor <span class="heart">🩷</span></div>
+        <div class="card-cta">
+          Abrir herramienta
+          <span class="card-cta-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 4: Clima -->
+    <a class="card" href="./clima-2-1/" style="--card-accent: var(--c4)">
+      <div class="card-bar"></div>
+      <div class="card-art">
+        <!-- Sol detrás de una nube, con gotas de lluvia -->
+        <svg viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- grid de fondo, coherente con las otras cards -->
+          <line x1="0" y1="33" x2="260" y2="33" stroke="#182236" stroke-width="1"/>
+          <line x1="0" y1="66" x2="260" y2="66" stroke="#182236" stroke-width="1"/>
+          <line x1="86"  y1="0" x2="86"  y2="100" stroke="#182236" stroke-width="1"/>
+          <line x1="173" y1="0" x2="173" y2="100" stroke="#182236" stroke-width="1"/>
+
+          <!-- sol -->
+          <circle cx="72" cy="36" r="16" fill="#ffd43b" fill-opacity=".9"/>
+          <g stroke="#ffd43b" stroke-width="2.5" stroke-linecap="round" stroke-opacity=".7">
+            <line x1="72" y1="11" x2="72" y2="5"/>
+            <line x1="95" y1="20" x2="100" y2="15"/>
+            <line x1="49" y1="20" x2="44" y2="15"/>
+          </g>
+
+          <!-- nube, un solo trazo suave -->
+          <path d="M100,74
+                   c-11,0 -17,-9 -12,-18
+                   c1,-11 12,-19 23,-16
+                   c4,-10 18,-13 27,-6
+                   c9,-3 19,3 20,13
+                   c9,1 15,9 13,18
+                   c-1,6 -7,9 -13,9
+                   Z"
+                fill="#4dabf7" fill-opacity=".16" stroke="#4dabf7" stroke-width="2.5" stroke-linejoin="round"/>
+
+          <!-- gotas de lluvia -->
+          <g stroke="#4dabf7" stroke-width="2.5" stroke-linecap="round" stroke-opacity=".85">
+            <line x1="116" y1="82" x2="111" y2="94"/>
+            <line x1="142" y1="82" x2="137" y2="94"/>
+            <line x1="168" y1="82" x2="163" y2="94"/>
+          </g>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-label">Herramienta agro-meteorológica</div>
+        <h2 class="card-title">Clima</h2>
+        <p class="card-desc">
+          Pronóstico por hora y por día con datos agro-meteorológicos crudos:
+          Delta-T, inversión térmica, riesgo de helada y balance hídrico.
+          Ubicación en tiempo real que sigue tu posición.
+        </p>
+        <div class="card-tags">
+          <span class="tag">Pronóstico</span>
+          <span class="tag">Delta-T</span>
+          <span class="tag">Heladas</span>
+          <span class="tag">GPS en vivo</span>
+        </div>
         <div class="card-cta">
           Abrir herramienta
           <span class="card-cta-arrow">→</span>
@@ -491,7 +578,7 @@ body {
   <!-- ── Footer ──────────────────────────────────── -->
   <footer class="footer">
     <div class="footer-text">
-      <span>3 herramientas</span>
+      <span>4 herramientas</span>
       <span class="footer-dot"></span>
       <span>client-side · sin backend</span>
       <span class="footer-dot"></span>
