@@ -246,6 +246,8 @@ export function dataSheet(h,i,{dTSeries,invSeries,frost}={}){
   const timeLabel=fmtRowTime(h.time[i]);
   const dr=o=>dataRow({...o,time:timeLabel});
   return dataGroupsWrap(`${dataGroup('Aire',[
+      dr({iconName:'cloud',color:'#94a3b8',label:'Condición',value:wmoLabel(h.weather_code[i])}),
+      dr({iconName:'temperature-half',color:'#f59e0b',label:'Sensación térmica',value:temp(h.apparent_temperature[i])}),
       dr({iconName:'droplet',color:'#3b82f6',label:'Humedad',value:pct(humPct),chip:humB.label,chipTone:humB.tone,term:'humedad'}),
       dr({iconName:'droplet',color:'#6366f1',label:'Punto de rocío',value:temp(h.dew_point_2m[i]),chip:dewB.label,chipTone:dewB.tone,term:'puntoRocio'}),
       dr({iconName:'temperature-half',color:'#f59e0b',label:'Delta-T',value:dT.toFixed(1),chip:dTBadge.label,chipTone:dTBadge.tone,term:'deltaT'}),
@@ -464,7 +466,6 @@ export function hourRow(h,i,{isNow=false,label=null,dTSeries,invSeries,frost}={}
       <span class="hr2-ic-wrap">
         ${weatherIconSVG(h.weather_code[i],{size:32,isDay:!!h.is_day[i]})}
         ${h.precipitation_probability[i]>0?`<span class="hr2-rain-badge${rainHi?' hi':''}">${icon('droplet',{size:7})}${pct(h.precipitation_probability[i])}</span>`:''}
-        <span class="hr2-ic-cond">${wmoLabel(h.weather_code[i])}</span>
       </span>
       <span class="hr2-temp" data-count="${tempC(h.temperature_2m[i])}" data-suffix="°">0°</span>
       <span class="hr2-mid-txt">

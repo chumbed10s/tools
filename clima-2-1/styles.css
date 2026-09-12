@@ -288,20 +288,16 @@ body{
   padding:2px 4px; border-radius:8px; border:1.5px solid var(--surface); white-space:nowrap;
 }
 .hr2-rain-badge.hi{background:#1e3a8a; color:#93c5fd;}
-.hr2-ic-cond{display:none;}
 @media (max-width:879px){
   .hr2-rain-badge{display:flex;}
   .hr2-right .rpill{display:none;}
 
-  /* La condición ("Nublado") va debajo del ícono de la nube, no en una fila
-     aparte a la izquierda — la sensación térmica se saca del todo acá,
-     sobra en un espacio tan chico. */
+  /* No entra la condición/sensación al lado de la hora sin que se corte o
+     desborde — se sacan de la fila (quedan igual como filas de datos
+     adentro del desplegable) y el resto se estira para ocupar toda la
+     fila en vez de dejar un hueco a la derecha. */
   .hr2-mid-txt{display:none;}
-  .hr2-ic-wrap{flex-direction:column; align-items:center; gap:1px;}
-  .hr2-ic-cond{
-    display:block; font-size:9px; color:var(--muted); text-align:center; line-height:1.15;
-    max-width:52px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-  }
+  .hr2-right{margin-left:auto;}
 }
 .hr2-chev{color:var(--muted-2); flex-shrink:0; transition:transform .2s;}
 .hr2-row.open .hr2-chev{transform:rotate(180deg);}
