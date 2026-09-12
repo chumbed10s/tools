@@ -10,8 +10,20 @@
     {
       "name": "clima",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8135", "--directory", "clima"],
+      "runtimeArgs": ["-m", "http.server", "8135", "--directory", "clima-2-1"],
       "port": 8135
+    },
+    {
+      "name": "clima-viejo",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8141", "--directory", "clima"],
+      "port": 8141
+    },
+    {
+      "name": "clima-v2",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8140", "--directory", "clima-v2"],
+      "port": 8140
     }
   ]
 }

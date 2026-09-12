@@ -2,6 +2,12 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<script>
+// Si el usuario ya eligió pasarse a la versión nueva, redirigir siempre desde acá.
+try{
+  if(localStorage.getItem('clima_redirect_to_21')==='1')location.replace('../clima-2-1/');
+}catch(e){}
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Clima · Campo</title>
 <meta name="theme-color" content="#e8e4db">
@@ -11,6 +17,11 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<div id="new-version-banner" hidden style="position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding:10px 16px;background:#111827;color:#f4f4f5;font:13px/1.4 -apple-system,'Segoe UI',Roboto,sans-serif;border-bottom:1px solid #2e2e33;">
+  <span>Hay una nueva versión de Clima disponible.</span>
+  <button id="nvb-go" style="background:#3b82f6;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-weight:600;font-size:12.5px;cursor:pointer;">Ir a la nueva versión</button>
+  <button id="nvb-dismiss" aria-label="Cerrar" style="background:none;border:none;color:#9d9da8;font-size:16px;cursor:pointer;line-height:1;padding:2px 6px;">&times;</button>
+</div>
 <canvas id="backdrop" aria-hidden="true"></canvas>
 
 <div id="app">
@@ -57,5 +68,25 @@
 
 <div id="toast-host"></div>
 <script type="module" src="js/main.js"></script>
+<script>
+(function(){
+  var REDIRECT_KEY='clima_redirect_to_21', DISMISS_KEY='clima_21_banner_dismissed';
+  var banner=document.getElementById('new-version-banner');
+  if(!banner)return;
+  if(!sessionStorage.getItem(DISMISS_KEY)){
+    banner.hidden=false;
+    document.body.style.paddingTop='44px';
+  }
+  document.getElementById('nvb-go').addEventListener('click',function(){
+    try{localStorage.setItem(REDIRECT_KEY,'1');}catch(e){}
+    location.href='../clima-2-1/';
+  });
+  document.getElementById('nvb-dismiss').addEventListener('click',function(){
+    banner.hidden=true;
+    document.body.style.paddingTop='';
+    try{sessionStorage.setItem(DISMISS_KEY,'1');}catch(e){}
+  });
+})();
+</script>
 </body>
 </html>
