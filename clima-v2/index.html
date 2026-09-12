@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Clima · Campo</title>
+<meta name="theme-color" content="#f3f0e8">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="stylesheet" href="vendor/fa.min.css">
+<link rel="stylesheet" href="vendor/fa-solid.min.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- Rail: navegación lateral en desktop -->
+  <aside class="rail">
+    <div class="rail-brand">
+      <span class="rail-brand-ic"><i class="fa-solid fa-cloud-sun"></i></span>
+      <span class="rail-brand-t">Clima</span>
+    </div>
+    <button class="location-btn rail-location">
+      <span class="loc-ic"><i class="fa-solid fa-location-dot"></i></span>
+      <span id="location-name-rail">Cargando…</span>
+      <span id="gps-pill-rail" class="gps-pill" hidden><i></i>GPS</span>
+    </button>
+    <nav id="sidenav" class="sidenav"></nav>
+    <button class="refresh-btn rail-refresh" title="Actualizar" aria-label="Actualizar">
+      <i class="fa-solid fa-arrows-rotate"></i><span>Actualizar</span>
+    </button>
+  </aside>
+
+  <div class="main-col">
+    <!-- Topbar: sólo mobile -->
+    <header class="topbar">
+      <button class="location-btn hdr-location">
+        <span id="location-name">Cargando…</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <span id="gps-pill" class="gps-pill" hidden><i></i>GPS</span>
+      <button class="refresh-btn icon-btn" title="Actualizar" aria-label="Actualizar">
+        <i class="fa-solid fa-arrows-rotate"></i>
+      </button>
+    </header>
+
+    <main id="view" class="view"></main>
+
+    <!-- Bottom nav: sólo mobile -->
+    <nav id="bottomnav" class="bottomnav"></nav>
+  </div>
+
+  <!-- Modal de ubicaciones -->
+  <div class="modal-overlay" id="location-modal" hidden>
+    <div class="modal-card location-modal">
+      <div class="modal-top">
+        <span class="modal-title">Ubicaciones</span>
+        <button class="modal-close" id="location-close" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <button class="gps-btn" id="gps-btn"><i class="fa-solid fa-location-crosshairs"></i>Usar mi ubicación</button>
+        <input class="search-input" id="location-search" placeholder="Buscar ciudad…" autocomplete="off">
+        <div id="search-results" class="search-results"></div>
+        <div class="saved-label">Guardadas</div>
+        <div id="saved-list" class="saved-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay de detalle de día -->
+  <div class="modal-overlay" id="daydetail-overlay" hidden>
+    <div class="modal-card daydetail-card">
+      <div class="modal-top">
+        <span class="modal-title">Detalle del día</span>
+        <button class="modal-close" id="daydetail-close" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="daydetail-panel"></div>
+    </div>
+  </div>
+
+  <div id="loading-overlay" class="loading-overlay" hidden><div class="spinner"></div></div>
+</div>
+
+<div id="toast-host"></div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
