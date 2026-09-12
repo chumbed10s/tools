@@ -20,6 +20,7 @@
   --mono:    'JetBrains Mono', monospace;
   --c1:      #00c9a7; /* teal  — SHP converter */
   --c2:      #69db7c; /* verde — densidad siembra */
+  --c3:      #c99bf0; /* lila  — graficadora */
 }
 
 html, body {
@@ -449,12 +450,48 @@ body {
       </div>
     </a>
 
+    <!-- Card 3: Graficadora Cálculo 1 -->
+    <a class="card" href="./graficadora/" style="--card-accent: var(--c3)">
+      <div class="card-bar"></div>
+      <div class="card-art">
+        <!-- Curva estilizada con marcadores -->
+        <svg viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="50" x2="260" y2="50" stroke="#182236" stroke-width="1"/>
+          <line x1="130" y1="0" x2="130" y2="100" stroke="#182236" stroke-width="1"/>
+          <path d="M 10 20 Q 70 95 130 50 T 250 15" fill="none" stroke="#c99bf0" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="72" cy="70" r="4" fill="#0d1525" stroke="#c99bf0" stroke-width="2"/>
+          <circle cx="188" cy="30" r="4" fill="#0d1525" stroke="#c99bf0" stroke-width="2"/>
+          <path d="M62 45 L82 45 L72 62 Z" fill="#f783ac" fill-opacity=".8"/>
+          <rect x="10" y="52" width="240" height="3" fill="#c99bf0" fill-opacity=".35"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-label">Herramienta académica</div>
+        <h2 class="card-title">Graficadora<br>Cálculo 1</h2>
+        <p class="card-desc">
+          Graficá funciones con estilo GeoGebra: dominio, imagen, raíces,
+          crecimiento, concavidad, extremos y asíntotas marcados de forma
+          didáctica. Incluye calculadora científica integrada.
+        </p>
+        <div class="card-tags">
+          <span class="tag">Cálculo 1</span>
+          <span class="tag">Gráficos</span>
+          <span class="tag">Análisis</span>
+          <span class="tag">Calculadora</span>
+        </div>
+        <div class="card-cta">
+          Abrir herramienta
+          <span class="card-cta-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
   </div>
 
   <!-- ── Footer ──────────────────────────────────── -->
   <footer class="footer">
     <div class="footer-text">
-      <span>2 herramientas</span>
+      <span>3 herramientas</span>
       <span class="footer-dot"></span>
       <span>client-side · sin backend</span>
       <span class="footer-dot"></span>
