@@ -71,16 +71,17 @@ export function dataRow({iconName,color='#9d9da8',label,value,chip='',chipTone='
 }
 
 export function dataGroup(title,rows){
-  return `<details class="hsheet-group">
+  return `<details class="hsheet-group" open>
     <summary class="hsheet-group-title">${title}${icon('chevron-down',{size:11,cls:'hsheet-group-chev'})}</summary>
     <div class="hsheet">${rows.join('')}</div>
   </details>`;
 }
 
 // Envuelve un conjunto de dataGroup con un botón "Desplegar/Colapsar todo".
+// Arrancan desplegados (si no, no se entiende qué son esas categorías).
 export function dataGroupsWrap(bodyHTML){
   return `<div class="hsheet-wrap">
-    <button class="hsheet-toggle-all" data-toggle-all>${icon('layer-group',{size:11})} Desplegar todo</button>
+    <button class="hsheet-toggle-all" data-toggle-all>${icon('layer-group',{size:11})} Colapsar todo</button>
     ${bodyHTML}
   </div>`;
 }
