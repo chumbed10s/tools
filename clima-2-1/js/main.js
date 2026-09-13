@@ -161,7 +161,12 @@ async function refreshActive({manual=false}={}){
 
 function armRefreshTimer(){
   clearInterval(refreshTimer);
-  if(document.visibilityState!=='visible')return;
+  // El intervalo sigue corriendo aunque la app esté minimizada — el sistema
+  // operativo puede pausar el timer igual si la suspende del todo, así que
+  // al volver a primer plano nos aseguramos de refrescar si ya pasó la hora.
+  if(document.visibilityState==='visible'&&state.lastUpdated&&Date.now()-state.lastUpdated>=REFRESH_MS){
+    refreshActive();
+  }
   refreshTimer=setInterval(refreshActive,REFRESH_MS);
 }
 
